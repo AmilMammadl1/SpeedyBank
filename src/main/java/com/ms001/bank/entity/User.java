@@ -13,10 +13,10 @@ public class User {
     private String firstName;
     private String lastName;
     private String password;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", unique = true)
-    private Account account;
-    @ManyToMany(mappedBy = "users")
-    private List<Bank> banks = new ArrayList<>();
+    private String fatherName;
+    private String phoneNumber;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Account> accountList = new ArrayList<>();
+
 
 }

@@ -21,8 +21,9 @@ public class Account {
     private Date createdAt;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-    @OneToOne(mappedBy = "account")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Card> cards = new ArrayList<>();
+    private List<Card> cardList = new ArrayList<>();
 }
