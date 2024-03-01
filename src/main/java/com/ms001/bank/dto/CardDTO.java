@@ -1,17 +1,20 @@
 package com.ms001.bank.dto;
 
 import com.ms001.bank.constant.CardType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CardDTO {
     private Long id;
-    private String cardNumber;
-    private Date expirationDate;
     private CardType cardType;
-    private boolean isActive;
-    private double balanceCard;
-    private Long accountId;  // Assuming you want to include account ID in the DTO
-    private List<Long> transactionIds;
+    private double balance;
+    private Long accountId;
 }

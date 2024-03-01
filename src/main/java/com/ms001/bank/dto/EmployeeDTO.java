@@ -1,7 +1,15 @@
 package com.ms001.bank.dto;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.List;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmployeeDTO {
     private Long id;
     private String firstName;
@@ -9,5 +17,6 @@ public class EmployeeDTO {
     private String fatherName;
     private String email;
     private double salary;
-    private List<Long> bankIds;
+    private Long departmentId;
+
 }

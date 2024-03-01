@@ -1,29 +1,60 @@
 package com.ms001.bank.entity;
 
-import com.ms001.bank.constant.AccountType;
+import com.ms001.bank.constant.CardType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
+@Setter
+@Getter
+@AllArgsConstructor
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String accountNumber;
     private double balanceTotal;
-    @Enumerated(EnumType.STRING)
-    private AccountType accountType;
     private boolean isActive;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
     private User user;
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Card> cardList = new ArrayList<>();
+    private List<Card> cards = new ArrayList<>();
+    public Account() {
+        // Create a new Card with default values and add it to the list
+        Card defaultCard = new Card();
+        defaultCard.setCardNumber(generateUniqueCardNumber());
+
+        // Set expiration date to 10 years from the current date
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, 10);
+        defaultCard.setExpirationDate(calendar.getTime());
+
+        // Set other default values
+        defaultCard.setCardType(CardType.DEBIT);
+        defaultCard.setActive(true);
+        defaultCard.setBalance(0.0);
+        defaultCard.setCreatedAt(new Date());
+
+        // Set bidirectional relationship
+        defaultCard.setAccount(this);
+
+        this.cards.add(defaultCard);
+    }
+    private String generateUniqueCardNumber() {
+        // Fixed prefix for the card number
+        String prefix = "88186818";
+
+        // Generate a unique portion using UUID
+        String uniquePortion = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
+
+        // Concatenate the prefix and unique portion to create the full card number
+        return prefix + uniquePortion;
+    }
 }

@@ -10,6 +10,6 @@ public class Branch {
     private String branchName;
     private String location;
     @ManyToOne
-    @JoinColumn(name = "bank_id", nullable = false)
+    @JoinColumn(name = "bank_id")
     private Bank bank;
 }
