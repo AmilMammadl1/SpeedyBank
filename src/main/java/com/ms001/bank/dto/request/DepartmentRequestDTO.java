@@ -12,5 +12,5 @@ import lombok.Setter;
 public class DepartmentRequestDTO {
     private String name;
     private String description;
-    private Long bankId;
+    private String bankName;
 }

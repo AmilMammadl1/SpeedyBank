@@ -13,5 +13,5 @@ public class BranchDTO {
     private Long id;
     private String branchName;
     private String location;
-    private Long bankId;
+    private String bankName;
 }

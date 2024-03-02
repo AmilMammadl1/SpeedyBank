@@ -1,9 +1,11 @@
 package com.ms001.bank.controller;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/account")
 public class AccountController {
+
 }

@@ -12,4 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 public class BankRequestDTO {
     private String name;
+    private List<Long> branchIds;  // Assuming you want to include branch IDs in the DTO
+    private List<Long> atmIds;  // Assuming you want to include ATM IDs in the DTO
+    private List<Long> employeeIds;  // Assuming you want to include employee IDs in the DTO
+    private List<Long> userIds;
 }

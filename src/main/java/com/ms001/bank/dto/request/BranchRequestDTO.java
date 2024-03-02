@@ -12,5 +12,5 @@ import lombok.Setter;
 public class BranchRequestDTO {
     private String branchName;
     private String location;
-    private Long bankId;
+    private String bankName;
 }

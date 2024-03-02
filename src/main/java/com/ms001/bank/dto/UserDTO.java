@@ -17,5 +17,5 @@ public class UserDTO {
     private String fatherName;
     private String phoneNumber;
     private Long accountId;
-    private Long bankId;
+    private String bankName;
 }

@@ -14,8 +14,7 @@ import java.util.List;
 @Data
 public class Bank {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(unique = true)  // Ensure uniqueness for the name column
     private String name;
     @OneToMany(mappedBy = "bank", cascade = CascadeType.ALL)
     private List<Branch> branches = new ArrayList<>();

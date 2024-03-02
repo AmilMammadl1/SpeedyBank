@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ATMRequestDTO {
     private String location;
-    private String status;
-    private SupportedServicesType supportedServices;
-    private Long bankId;
+    private List<SupportedServicesType> supportedServices;
+    private String bankName;
 }

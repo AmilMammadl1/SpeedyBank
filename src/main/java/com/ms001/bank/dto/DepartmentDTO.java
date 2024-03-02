@@ -14,6 +14,6 @@ public class DepartmentDTO {
     private Long id;
     private String name;
     private String description;
-    private Long bankId;
+    private String bankName;
     private List<Long> employeeIds;
 }

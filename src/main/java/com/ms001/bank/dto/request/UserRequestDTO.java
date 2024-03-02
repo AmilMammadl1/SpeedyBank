@@ -16,6 +16,6 @@ public class UserRequestDTO {
     private String fatherName;
     private String password;
     private String phoneNumber;
-    private Long bankId;
+    private String bankName;
 
 }

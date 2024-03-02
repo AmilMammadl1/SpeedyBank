@@ -13,4 +13,6 @@ public class AccountRequestDTO {
     private double balanceTotal;
     private boolean isActive;
     private Long userId;
+    private List<Long> cardIds;
+
 }

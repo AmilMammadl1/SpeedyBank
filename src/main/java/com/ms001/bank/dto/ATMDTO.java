@@ -13,7 +13,6 @@ import lombok.Setter;
 public class ATMDTO {
     private Long id;
     private String location;
-    private String status;
     private SupportedServicesType supportedServices;
     private Long bankId;
 }
