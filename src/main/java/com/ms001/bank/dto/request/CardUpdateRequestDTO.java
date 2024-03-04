@@ -1,17 +1,16 @@
 package com.ms001.bank.dto.request;
+
+import com.ms001.bank.constant.CardType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountRequestDTO {
-    private boolean isActive;
-//    private Long userId;
-//    private List<Long> cardIds;
-
+public class CardUpdateRequestDTO {
+    private CardType cardType;
+    private Boolean isActive;
 }

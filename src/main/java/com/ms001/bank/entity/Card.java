@@ -20,7 +20,8 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
-    private String cardNumber;    private Date expirationDate;
+    private String cardNumber;
+    private Date expirationDate;
     @Enumerated(EnumType.STRING)
     private CardType cardType;
     private boolean isActive;

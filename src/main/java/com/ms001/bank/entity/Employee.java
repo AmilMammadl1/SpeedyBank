@@ -1,11 +1,16 @@
 package com.ms001.bank.entity;
 
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +22,6 @@ public class Employee {
     private double salary;
     @ManyToOne
     @JoinColumn(name = "department_id")
-    private Deparment deparment;
+    private Department department;
 
 }

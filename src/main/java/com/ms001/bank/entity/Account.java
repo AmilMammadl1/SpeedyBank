@@ -27,6 +27,7 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Card> cards = new ArrayList<>();
     public Account() {
+
         // Create a new Card with default values and add it to the list
         Card defaultCard = new Card();
         defaultCard.setCardNumber(generateUniqueCardNumber());

@@ -10,12 +10,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequestDTO {
-    private String firstName;
-    private String lastName;
-    private String fatherName;
-    private String password;
-    private String phoneNumber;
-    private String bankName;
-
+public class BankUpdateRequestDTO {
+    private String name;
 }

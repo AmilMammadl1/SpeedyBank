@@ -24,7 +24,7 @@ public class ATMServiceImpl implements ATMService {
 
     @Override
     public ATMDTO getATMById(Long id) {
-        ATM byId = atmRepository.findById(id).orElseThrow(() -> new RuntimeException("ATM not found with id: "+id));
+        ATM byId = atmRepository.findById(id).orElseThrow(() -> new RuntimeException("ATM not found with id: " + id));
         ATMDTO map = modelMapper.map(byId, ATMDTO.class);
         return map;
     }
@@ -42,14 +42,13 @@ public class ATMServiceImpl implements ATMService {
         Bank byId = bankRepository.findById(name).orElseThrow();
         ATM atm = new ATM(atmRequestDTO.getLocation(), byId);
 
-
         ATM save = atmRepository.save(atm);
         ATMDTO map = modelMapper.map(save, ATMDTO.class);
         return map;
     }
 
     @Override
-    public ATMDTO updateATM(Long atmId,ATMRequestDTO atmRequestDTO) {
+    public ATMDTO updateATM(Long atmId, ATMRequestDTO atmRequestDTO) {
         Bank byIdBank = bankRepository.findById(atmRequestDTO.getBankName())
                 .orElseThrow(() -> new RuntimeException("Bank not found with id: " + atmRequestDTO.getBankName()));
 
@@ -67,6 +66,7 @@ public class ATMServiceImpl implements ATMService {
 
     @Override
     public void deleteATM(Long id) {
+        ATM byId = atmRepository.findById(id).orElseThrow(() -> new RuntimeException("ATM not found with id: " + id));
         atmRepository.deleteById(id);
     }
 }

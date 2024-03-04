@@ -16,13 +16,12 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private double amount;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
-
+    public Transaction() {
+    }
 }

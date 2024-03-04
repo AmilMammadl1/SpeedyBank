@@ -8,6 +8,7 @@ import com.ms001.bank.repository.ATMRepository;
 import com.ms001.bank.repository.BankRepository;
 import com.ms001.bank.repository.BranchRepository;
 import com.ms001.bank.service.BranchService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class BranchServiceImpl implements BranchService {
     private ModelMapper modelMapper;
     private BranchRepository branchRepository;
     private BankRepository bankRepository;
+
     @Override
     public List<BranchDTO> getAllBranch() {
         List<Branch> all = branchRepository.findAll();
-        List<BranchDTO> collect = all.stream().map(branch -> modelMapper.map(branch, BranchDTO.class)).collect(Collectors.toList());
+        List<BranchDTO> collect = all.stream()
+                .map(branch -> modelMapper.map(branch, BranchDTO.class)).
+                collect(Collectors.toList());
         return collect;
     }
 
@@ -66,8 +71,11 @@ public class BranchServiceImpl implements BranchService {
         }
         return null;
     }
+
     @Override
     public void deleteBranchByid(Long id) {
+        Branch branch = branchRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Branch not found with id: " + id + " for the specified bank"));
         branchRepository.deleteById(id);
     }
 }

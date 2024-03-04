@@ -21,7 +21,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String fatherName;
-    private String password;
+    private String password = null;
     private String phoneNumber;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Account account;
@@ -30,9 +30,11 @@ public class User {
     private Bank bank;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Loan> loans = new ArrayList<>();
-    public User(String firstName, String lastName, Bank bank) {
+    public User(String firstName,String lastName,String fatherName,String phoneNumber,Bank bank) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.fatherName = fatherName;
+        this.phoneNumber = phoneNumber;
         this.bank = bank;
 
         // Create a new Account with default values and set bidirectional relationship

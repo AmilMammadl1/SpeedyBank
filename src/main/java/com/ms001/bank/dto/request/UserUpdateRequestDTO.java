@@ -1,18 +1,18 @@
 package com.ms001.bank.dto.request;
 
-import com.ms001.bank.constant.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionRequestDTO {
-    private TransactionType transactionType;
+public class UserUpdateRequestDTO {
+    private String firstName;
+    private String lastName;
+    private String fatherName;
+//    private String password;
+    private String phoneNumber;
 }
