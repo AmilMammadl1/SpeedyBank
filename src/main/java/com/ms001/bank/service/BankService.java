@@ -8,5 +8,5 @@ public interface BankService {
     BankDTO getBankkByName(String name);
     BankDTO createBank(BankCreateRequestDTO bankCreateRequestDTO);
     BankDTO updateBank(String name, BankUpdateRequestDTO bankUpdateRequestDTO);
-    void deleteBranchByid(String name);
+    void deleteBankByid(String name);
 }

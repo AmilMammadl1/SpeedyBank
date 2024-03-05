@@ -44,8 +44,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentDTO createDepartment(DepartmentRequestDTO departmentRequestDTO) {
         Department department = new Department();
 
-        Bank bank = bankRepository.findById(departmentRequestDTO.getBankName())
-                .orElseThrow(() -> new RuntimeException("Bank not found with specified name: " + departmentRequestDTO.getBankName()));
+        Bank bank = bankRepository.findById(departmentRequestDTO.getBankName()).orElseThrow(() -> new RuntimeException("Bank not found with specified name: " + departmentRequestDTO.getBankName()));
         List<Long> employeeIds = departmentRequestDTO.getEmployeeIds();
         List<Employee> employees = new ArrayList<>();
 
@@ -69,11 +68,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDTO updateDepartment(DepartmentRequestDTO departmentRequestDTO, Long id) {
 
-        Department department = departmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
-
-        Bank bank = bankRepository.findById(departmentRequestDTO.getBankName())
-                .orElseThrow(() -> new RuntimeException("Bank not found with specified name: " + departmentRequestDTO.getBankName()));
+        Bank bank = bankRepository.findById(departmentRequestDTO.getBankName()).orElseThrow(() -> new RuntimeException("Bank not found with specified name: " + departmentRequestDTO.getBankName()));
+//        Department department = departmentRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
+        List<Department> departments = bank.getDepartments();
+        Department department = null;
+        if (id >= 1) {
+            department = departments.get((int) (id - 1));
+        }
         List<Long> employeeIds = departmentRequestDTO.getEmployeeIds();
         List<Employee> employees = new ArrayList<>();
 
@@ -84,20 +86,23 @@ public class DepartmentServiceImpl implements DepartmentService {
                 employees.add(employee);
             }
         }
+        if (department != null) {
 
-        department.setName(departmentRequestDTO.getName());
-        department.setDescription(departmentRequestDTO.getDescription());
-        department.setBank(bank);
-        department.setEmployees(employees);
-        Department savedDepartment = departmentRepository.save(department);
-        DepartmentDTO map = modelMapper.map(savedDepartment, DepartmentDTO.class);
-        return map;
+            department.setName(departmentRequestDTO.getName());
+            department.setDescription(departmentRequestDTO.getDescription());
+            department.setBank(bank);
+            department.setEmployees(employees);
+            Department savedDepartment = departmentRepository.save(department);
+            DepartmentDTO map = modelMapper.map(savedDepartment, DepartmentDTO.class);
+            return map;
+        }
+        return null;
     }
 
     @Override
     public void deleteDepartment(Long id) {
-        Department department = departmentRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
+        Department department = departmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
         departmentRepository.deleteById(id);
     }
 }
+

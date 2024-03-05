@@ -2,7 +2,7 @@ package com.ms001.bank.service.Impl;
 
 import com.ms001.bank.constant.TransactionType;
 import com.ms001.bank.dto.CardDTO;
-import com.ms001.bank.dto.request.CardRequestDTO;
+import com.ms001.bank.dto.request.CardCreateRequestDTO;
 import com.ms001.bank.dto.request.CardUpdateRequestDTO;
 import com.ms001.bank.entity.Account;
 import com.ms001.bank.entity.Card;
@@ -73,10 +73,10 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardDTO createCard(CardRequestDTO cardRequestDTO) {
-        Long accountId = cardRequestDTO.getAccountId();
+    public CardDTO createCard(CardCreateRequestDTO cardCreateRequestDTO) {
+        Long accountId = cardCreateRequestDTO.getAccountId();
         Account account = accountRepository.findById(accountId).orElseThrow();
-        Card card = new Card(cardRequestDTO.getCardType(),account);
+        Card card = new Card(cardCreateRequestDTO.getCardType(),account);
         Card save = cardRepository.save(card);
         CardDTO map = modelMapper.map(save, CardDTO.class);
         return map;

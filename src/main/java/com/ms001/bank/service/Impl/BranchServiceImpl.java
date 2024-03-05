@@ -57,12 +57,11 @@ public class BranchServiceImpl implements BranchService {
     public BranchDTO updateBranch(Long id, BranchRequestDTO branchRequestDTO) {
         Bank bank = bankRepository.findById(branchRequestDTO.getBankName())
                 .orElseThrow(() -> new RuntimeException("Bank not found with name: " + branchRequestDTO.getBankName()));
-        Branch branch = branchRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Bank not found with name: " + branchRequestDTO.getBankName()));
-
+        List<Branch> branches = bank.getBranches();
+//        Branch branch = branchRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Bank not found with name: " + branchRequestDTO.getBankName()));
+        Branch branch = branches.get((int) (id - 1));
         if (branch != null) {
-            branch = new Branch();
-            branch.setBank(bank);
             branch.setBranchName(branchRequestDTO.getBranchName());
             branch.setLocation(branchRequestDTO.getLocation());
             Branch save = branchRepository.save(branch);

@@ -40,7 +40,7 @@ public class BankServiceImpl implements BankService {
         return bankDTO;
     }
     @Override
-    public void deleteBranchByid(String name) {
+    public void deleteBankByid(String name) {
         Bank bank = bankRepository.findById(name).orElseThrow();
         bankRepository.deleteById(name);
     }

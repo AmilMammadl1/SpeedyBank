@@ -52,21 +52,23 @@ public class ATMServiceImpl implements ATMService {
         Bank byIdBank = bankRepository.findById(atmRequestDTO.getBankName())
                 .orElseThrow(() -> new RuntimeException("Bank not found with id: " + atmRequestDTO.getBankName()));
 
-        ATM atm = atmRepository.findById(atmId)
-                .orElseThrow(() -> new RuntimeException("ATM not found with id: " + atmId + " for the specified bank"));
-
-        atm.setLocation(atmRequestDTO.getLocation());
-        atm.setSupportedServices(atmRequestDTO.getSupportedServices());
-        atm.setBank(byIdBank);
-        ATM save = atmRepository.save(atm);
-        ATMDTO atmdto = modelMapper.map(save, ATMDTO.class);
-        return atmdto;
+        List<ATM> atms = byIdBank.getAtms();
+        ATM atm = atms.get((int) (atmId - 1));
+//        ATM atm = atmRepository.findById(atmId)
+//                .orElseThrow(() -> new RuntimeException("ATM not found with id: " + atmId + " for the specified bank"));
+        if (atm != null) {
+            atm.setLocation(atmRequestDTO.getLocation());
+            atm.setSupportedServices(atmRequestDTO.getSupportedServices());
+            atm.setBank(byIdBank);
+            ATM save = atmRepository.save(atm);
+            ATMDTO atmdto = modelMapper.map(save, ATMDTO.class);
+            return atmdto;
+        }
+        return null;
     }
-
-
-    @Override
-    public void deleteATM(Long id) {
-        ATM byId = atmRepository.findById(id).orElseThrow(() -> new RuntimeException("ATM not found with id: " + id));
-        atmRepository.deleteById(id);
+        @Override
+        public void deleteATM (Long id){
+            ATM byId = atmRepository.findById(id).orElseThrow(() -> new RuntimeException("ATM not found with id: " + id));
+            atmRepository.deleteById(id);
+        }
     }
-}

@@ -1,7 +1,6 @@
 package com.ms001.bank.service.Impl;
 
 import com.ms001.bank.dto.TransactionDTO;
-import com.ms001.bank.dto.TransactionRequestDTO;
 import com.ms001.bank.dto.request.TransactionRequestDTO;
 import com.ms001.bank.entity.Transaction;
 import com.ms001.bank.repository.TransactionRepository;
