@@ -1,4 +1,4 @@
-package com.ms001.bank.dto;
+package com.ms001.bank.dto.response;
 
 import com.ms001.bank.constant.CardType;
 import lombok.AllArgsConstructor;
@@ -6,13 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CardDTO {
+public class CardResponseDTO {
     private Long id;
     private CardType cardType;
     private double balance;

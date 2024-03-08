@@ -1,9 +1,5 @@
-package com.ms001.bank.dto;
+package com.ms001.bank.dto.response;
 
-import com.ms001.bank.constant.SupportedServicesType;
-import com.ms001.bank.entity.User;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoanDTO {
+public class LoanResponseDTO {
     private Long id;
     private Double amount;
     private String term;
-    private Long userId;
+    private Long customerId;
 }

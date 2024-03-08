@@ -1,0 +1,26 @@
+# src/main/resources/application.yml
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/myDatabase
+    username: postgres
+    password: amil2003
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+
+url:
+  ignore:
+    swagger: /v2/api-docs, /webjars/*, /swagger-resources/, /actuator/health, /swagger-ui/index.html, /swagger-ui.html, /app//.{js,html}
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+

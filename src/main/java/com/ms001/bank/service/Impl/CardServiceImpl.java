@@ -1,7 +1,7 @@
 package com.ms001.bank.service.Impl;
 
 import com.ms001.bank.constant.TransactionType;
-import com.ms001.bank.dto.CardDTO;
+import com.ms001.bank.dto.response.CardResponseDTO;
 import com.ms001.bank.dto.request.CardCreateRequestDTO;
 import com.ms001.bank.dto.request.CardUpdateRequestDTO;
 import com.ms001.bank.entity.Account;
@@ -36,49 +36,49 @@ public class CardServiceImpl implements CardService {
         transactionRepository.save(transaction);
 
         // Update the card balance based on the transaction type
-        card.updateBalance(transaction);
+//        card.updateBalance(transaction);
         cardRepository.save(card);
     }
 
     @Override
-    public List<CardDTO> getAllCards() {
+    public List<CardResponseDTO> getAllCards() {
         List<Card> all = cardRepository.findAll();
-        List<CardDTO> collect = all.stream().map(card -> modelMapper.map(card, CardDTO.class)).collect(Collectors.toList());
+        List<CardResponseDTO> collect = all.stream().map(card -> modelMapper.map(card, CardResponseDTO.class)).collect(Collectors.toList());
         return collect;
     }
 
     @Override
-    public List<CardDTO> getAllCardsByAccountId(Long id) {
+    public List<CardResponseDTO> getAllCardsByAccountId(Long id) {
         Account account = accountRepository.findById(id).orElseThrow();
         List<Card> cards = account.getCards();
-        List<CardDTO> collect = cards.stream().map(card -> modelMapper.map(card, CardDTO.class)).collect(Collectors.toList());
+        List<CardResponseDTO> collect = cards.stream().map(card -> modelMapper.map(card, CardResponseDTO.class)).collect(Collectors.toList());
         return collect;
     }
 
     @Override
-    public CardDTO getCardById(Long id) {
+    public CardResponseDTO getCardById(Long id) {
         Card card = cardRepository.findById(id).orElseThrow();
-        CardDTO map = modelMapper.map(card, CardDTO.class);
+        CardResponseDTO map = modelMapper.map(card, CardResponseDTO.class);
         return map;
     }
 
     @Override
-    public CardDTO updateCard(CardUpdateRequestDTO cardUpdateRequestDTO, Long id) {
+    public CardResponseDTO updateCard(CardUpdateRequestDTO cardUpdateRequestDTO, Long id) {
         Card card = cardRepository.findById(id).orElseThrow();
         card.setCardType(cardUpdateRequestDTO.getCardType());
         card.setActive(cardUpdateRequestDTO.getIsActive());
         Card savedCard = cardRepository.save(card);
-        CardDTO cardDTO = modelMapper.map(savedCard, CardDTO.class);
-        return cardDTO;
+        CardResponseDTO cardResponseDTO = modelMapper.map(savedCard, CardResponseDTO.class);
+        return cardResponseDTO;
     }
 
     @Override
-    public CardDTO createCard(CardCreateRequestDTO cardCreateRequestDTO) {
+    public CardResponseDTO createCard(CardCreateRequestDTO cardCreateRequestDTO) {
         Long accountId = cardCreateRequestDTO.getAccountId();
         Account account = accountRepository.findById(accountId).orElseThrow();
         Card card = new Card(cardCreateRequestDTO.getCardType(),account);
         Card save = cardRepository.save(card);
-        CardDTO map = modelMapper.map(save, CardDTO.class);
+        CardResponseDTO map = modelMapper.map(save, CardResponseDTO.class);
         return map;
     }
 

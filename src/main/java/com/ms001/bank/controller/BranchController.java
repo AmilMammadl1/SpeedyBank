@@ -1,9 +1,8 @@
 package com.ms001.bank.controller;
 
-import com.ms001.bank.dto.ATMDTO;
-import com.ms001.bank.dto.BranchDTO;
-import com.ms001.bank.dto.request.ATMRequestDTO;
-import com.ms001.bank.dto.request.BranchRequestDTO;
+import com.ms001.bank.dto.request.BranchUpdateRequestDTO;
+import com.ms001.bank.dto.response.BranchResponseDTO;
+import com.ms001.bank.dto.request.BranchCreateRequestDTO;
 import com.ms001.bank.service.BranchService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,27 +18,27 @@ public class BranchController {
     private BranchService branchService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<BranchDTO>> getAllBranchs() {
-        List<BranchDTO> allBranch = branchService.getAllBranch();
+    public ResponseEntity<List<BranchResponseDTO>> getAllBranchs() {
+        List<BranchResponseDTO> allBranch = branchService.getAllBranch();
         return new ResponseEntity<>(allBranch, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BranchDTO> getBranchById(@PathVariable Long id) {
-        BranchDTO branchDTO = branchService.getBranchByid(id);
-        return new ResponseEntity<>(branchDTO, HttpStatus.OK);
+    public ResponseEntity<BranchResponseDTO> getBranchById(@PathVariable Long id) {
+        BranchResponseDTO branchResponseDTO = branchService.getBranchByid(id);
+        return new ResponseEntity<>(branchResponseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<BranchDTO> createBranch(@RequestBody BranchRequestDTO branchRequestDTO) {
-        BranchDTO branchDTO = branchService.createBranch(branchRequestDTO);
-        return new ResponseEntity<>(branchDTO, HttpStatus.CREATED);
+    public ResponseEntity<BranchResponseDTO> createBranch(@RequestBody BranchCreateRequestDTO branchCreateRequestDTO) {
+        BranchResponseDTO branchResponseDTO = branchService.createBranch(branchCreateRequestDTO);
+        return new ResponseEntity<>(branchResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BranchDTO> updateBranch(@PathVariable Long id, @RequestBody BranchRequestDTO branchRequestDTO) {
-        BranchDTO branchDTO = branchService.updateBranch(id, branchRequestDTO);
-        return new ResponseEntity<>(branchDTO, HttpStatus.OK);
+    public ResponseEntity<BranchResponseDTO> updateBranch(@PathVariable Long id, @RequestBody BranchUpdateRequestDTO branchUpdateRequestDTO) {
+        BranchResponseDTO branchResponseDTO = branchService.updateBranch(id, branchUpdateRequestDTO);
+        return new ResponseEntity<>(branchResponseDTO, HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteBranchByid(@PathVariable Long id) {

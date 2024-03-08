@@ -1,14 +1,15 @@
 package com.ms001.bank.service;
 
-import com.ms001.bank.dto.BranchDTO;
-import com.ms001.bank.dto.request.BranchRequestDTO;
+import com.ms001.bank.dto.request.BranchUpdateRequestDTO;
+import com.ms001.bank.dto.response.BranchResponseDTO;
+import com.ms001.bank.dto.request.BranchCreateRequestDTO;
 
 import java.util.List;
 
 public interface BranchService {
-    List<BranchDTO> getAllBranch();
-    BranchDTO getBranchByid(Long id);
-    BranchDTO createBranch(BranchRequestDTO branchRequestDTO);
-    BranchDTO updateBranch(Long id, BranchRequestDTO branchRequestDTO);
+    List<BranchResponseDTO> getAllBranch();
+    BranchResponseDTO getBranchByid(Long id);
+    BranchResponseDTO createBranch(BranchCreateRequestDTO branchCreateRequestDTO);
+    BranchResponseDTO updateBranch(Long id, BranchUpdateRequestDTO branchUpdateRequestDTO);
     void deleteBranchByid(Long id);
 }

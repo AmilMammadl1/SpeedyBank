@@ -1,10 +1,12 @@
 package com.ms001.bank.service.Impl;
 
-import com.ms001.bank.dto.BranchDTO;
-import com.ms001.bank.dto.request.BranchRequestDTO;
+import com.ms001.bank.dto.request.BranchUpdateRequestDTO;
+import com.ms001.bank.dto.response.BranchResponseDTO;
+import com.ms001.bank.dto.request.BranchCreateRequestDTO;
 import com.ms001.bank.entity.Bank;
 import com.ms001.bank.entity.Branch;
-import com.ms001.bank.repository.ATMRepository;
+import com.ms001.bank.exception.BranchNotFoundException;
+import com.ms001.bank.mapper.BranchMapper;
 import com.ms001.bank.repository.BankRepository;
 import com.ms001.bank.repository.BranchRepository;
 import com.ms001.bank.service.BranchService;
@@ -18,63 +20,55 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class BranchServiceImpl implements BranchService {
-    private ModelMapper modelMapper;
+    private BranchMapper branchMapper;
     private BranchRepository branchRepository;
     private BankRepository bankRepository;
 
     @Override
-    public List<BranchDTO> getAllBranch() {
+    public List<BranchResponseDTO> getAllBranch() {
         List<Branch> all = branchRepository.findAll();
-        List<BranchDTO> collect = all.stream()
-                .map(branch -> modelMapper.map(branch, BranchDTO.class)).
-                collect(Collectors.toList());
-        return collect;
+        List<BranchResponseDTO> branchResponseDTOS = all.stream()
+                .map(branch -> branchMapper.mapBranchEntityToBranchResponseDTO(branch))
+                .collect(Collectors.toList());
+        return branchResponseDTOS;
     }
 
     @Override
-    public BranchDTO getBranchByid(Long id) {
+    public BranchResponseDTO getBranchByid(Long id) {
         Branch branch = branchRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Branch not found with id: " + id + " for the specified bank"));
-        BranchDTO map = modelMapper.map(branch, BranchDTO.class);
-        return map;
+                .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + id));
+        BranchResponseDTO branchResponseDTO = branchMapper.mapBranchEntityToBranchResponseDTO(branch);
+        return branchResponseDTO;
     }
 
     @Override
-    public BranchDTO createBranch(BranchRequestDTO branchRequestDTO) {
-        Bank bank = bankRepository.findById(branchRequestDTO.getBankName())
-                .orElseThrow(() -> new RuntimeException("Bank not found with name: " + branchRequestDTO.getBankName()));
-
-        Branch branch = new Branch();
+    public BranchResponseDTO createBranch(BranchCreateRequestDTO branchCreateRequestDTO) {
+        Bank bank = bankRepository.findById(branchCreateRequestDTO.getBankName())
+                .orElseThrow(() -> new RuntimeException("Bank not found with name: " + branchCreateRequestDTO.getBankName()));
+        Branch branch = branchMapper.mapBranchCreateRequestDTOToBranchEntity(branchCreateRequestDTO);
         branch.setBank(bank);
-        branch.setBranchName(branchRequestDTO.getBranchName());
-        branch.setLocation(branchRequestDTO.getLocation());
-        Branch save = branchRepository.save(branch);
-        BranchDTO map = modelMapper.map(save, BranchDTO.class);
-        return map;
+        Branch createdBranch = branchRepository.save(branch);
+
+        BranchResponseDTO branchResponseDTO = branchMapper.mapBranchEntityToBranchResponseDTO(createdBranch);
+        return branchResponseDTO;
     }
 
     @Override
-    public BranchDTO updateBranch(Long id, BranchRequestDTO branchRequestDTO) {
-        Bank bank = bankRepository.findById(branchRequestDTO.getBankName())
-                .orElseThrow(() -> new RuntimeException("Bank not found with name: " + branchRequestDTO.getBankName()));
-        List<Branch> branches = bank.getBranches();
-//        Branch branch = branchRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Bank not found with name: " + branchRequestDTO.getBankName()));
-        Branch branch = branches.get((int) (id - 1));
-        if (branch != null) {
-            branch.setBranchName(branchRequestDTO.getBranchName());
-            branch.setLocation(branchRequestDTO.getLocation());
-            Branch save = branchRepository.save(branch);
-            BranchDTO map = modelMapper.map(save, BranchDTO.class);
-            return map;
-        }
-        return null;
+    public BranchResponseDTO updateBranch(Long id, BranchUpdateRequestDTO branchUpdateRequestDTO) {
+        Branch branch = branchRepository.findById(id)
+                .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + id));
+        branch.setBranchName(branchUpdateRequestDTO.getBranchName());
+        branch.setBranchName(branchUpdateRequestDTO.getBranchName());
+
+        Branch updatedBranch = branchRepository.save(branch);
+        BranchResponseDTO branchResponseDTO = branchMapper.mapBranchEntityToBranchResponseDTO(updatedBranch);
+        return branchResponseDTO;
     }
 
     @Override
     public void deleteBranchByid(Long id) {
         Branch branch = branchRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Branch not found with id: " + id + " for the specified bank"));
+                .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + id));
         branchRepository.deleteById(id);
     }
 }

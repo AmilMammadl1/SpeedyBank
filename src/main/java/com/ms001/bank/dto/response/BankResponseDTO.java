@@ -1,4 +1,4 @@
-package com.ms001.bank.dto;
+package com.ms001.bank.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,10 +10,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BankDTO {
+public class BankResponseDTO {
     private String name;
     private List<Long> branchIds;  // Assuming you want to include branch IDs in the DTO
     private List<Long> atmIds;  // Assuming you want to include ATM IDs in the DTO
-    private List<Long> employeeIds;  // Assuming you want to include employee IDs in the DTO
-    private List<Long> userIds;
+    private List<Long> departmentIds;  // Assuming you want to include employee IDs in the DTO
+    private List<Long> customerIds;
 }

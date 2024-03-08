@@ -1,10 +1,9 @@
 package com.ms001.bank.service.Impl;
 
-import com.ms001.bank.dto.EmployeeDTO;
+import com.ms001.bank.dto.response.EmployeeResponseDTO;
 import com.ms001.bank.dto.request.EmployeeRequestDTO;
 import com.ms001.bank.entity.Department;
 import com.ms001.bank.entity.Employee;
-import com.ms001.bank.repository.BankRepository;
 import com.ms001.bank.repository.DepartmentRepository;
 import com.ms001.bank.repository.EmployeeRepository;
 import com.ms001.bank.service.EmployeeService;
@@ -23,24 +22,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Override
-    public List<EmployeeDTO> getAllEmployees() {
+    public List<EmployeeResponseDTO> getAllEmployees() {
         List<Employee> all = employeeRepository.findAll();
-        List<EmployeeDTO> collect = all.stream()
-                .map(employee -> modelMapper.map(employee, EmployeeDTO.class))
+        List<EmployeeResponseDTO> collect = all.stream()
+                .map(employee -> modelMapper.map(employee, EmployeeResponseDTO.class))
                 .collect(Collectors.toList());
         return collect;
     }
 
     @Override
-    public EmployeeDTO getEmployeeById(Long id) {
+    public EmployeeResponseDTO getEmployeeById(Long id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not fount with id: " + id));
-        EmployeeDTO map = modelMapper.map(employee, EmployeeDTO.class);
+        EmployeeResponseDTO map = modelMapper.map(employee, EmployeeResponseDTO.class);
         return map;
     }
 
     @Override
-    public EmployeeDTO createEmployee(EmployeeRequestDTO employeeRequestDTO) {
+    public EmployeeResponseDTO createEmployee(EmployeeRequestDTO employeeRequestDTO) {
         Employee employee = new Employee();
         Department department = departmentRepository.findById(employeeRequestDTO.getDepartmentId())
                 .orElseThrow(() -> new RuntimeException("Department not found with id: " + employeeRequestDTO.getDepartmentId()));
@@ -51,12 +50,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setFatherName(employeeRequestDTO.getFatherName());
         employee.setDepartment(department);
         Employee savedEmployee = employeeRepository.save(employee);
-        EmployeeDTO map = modelMapper.map(savedEmployee, EmployeeDTO.class);
+        EmployeeResponseDTO map = modelMapper.map(savedEmployee, EmployeeResponseDTO.class);
         return map;
     }
 
     @Override
-    public EmployeeDTO updateEmployee(EmployeeRequestDTO employeeRequestDTO, Long id) {
+    public EmployeeResponseDTO updateEmployee(EmployeeRequestDTO employeeRequestDTO, Long id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
         Department department = departmentRepository.findById(employeeRequestDTO.getDepartmentId())
@@ -68,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setFatherName(employeeRequestDTO.getFatherName());
         employee.setDepartment(department);
         Employee savedEmployee = employeeRepository.save(employee);
-        EmployeeDTO map = modelMapper.map(savedEmployee, EmployeeDTO.class);
+        EmployeeResponseDTO map = modelMapper.map(savedEmployee, EmployeeResponseDTO.class);
         return map;
     }
 

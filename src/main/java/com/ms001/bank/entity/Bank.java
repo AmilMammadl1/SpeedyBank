@@ -23,6 +23,6 @@ public class Bank {
     @OneToMany(mappedBy = "bank", cascade = CascadeType.ALL)
     private List<Department> departments = new ArrayList<>();
     @OneToMany(mappedBy = "bank", cascade = CascadeType.ALL)
-    private List<User> users = new ArrayList<>();
+    private List<Customer> customers = new ArrayList<>();
 
 }

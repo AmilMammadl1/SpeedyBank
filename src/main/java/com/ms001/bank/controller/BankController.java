@@ -1,10 +1,9 @@
 package com.ms001.bank.controller;
 
-import com.ms001.bank.dto.ATMDTO;
-import com.ms001.bank.dto.BankDTO;
-import com.ms001.bank.dto.request.ATMRequestDTO;
+import com.ms001.bank.dto.response.BankResponseDTO;
 import com.ms001.bank.dto.request.BankCreateRequestDTO;
 import com.ms001.bank.dto.request.BankUpdateRequestDTO;
+import com.ms001.bank.entity.Bank;
 import com.ms001.bank.service.BankService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,21 +18,25 @@ import java.util.List;
 public class BankController {
     private BankService bankService;
     @GetMapping("/{name}")
-    public ResponseEntity<BankDTO> getBankById(@PathVariable String name) {
-        BankDTO bankDTO = bankService.getBankkByName(name);
-        return new ResponseEntity<>(bankDTO, HttpStatus.OK);
+    public ResponseEntity<BankResponseDTO> getBankById(@PathVariable String name) {
+        BankResponseDTO bankResponseDTO = bankService.getBankByName(name);
+        return new ResponseEntity<>(bankResponseDTO, HttpStatus.OK);
+    }
+    @GetMapping("/all")
+    public List<Bank> all() {
+        return bankService.getBankAll();
     }
 
     @PostMapping("/create")
-    public ResponseEntity<BankDTO> createBank(@RequestBody BankCreateRequestDTO bankCreateRequestDTO) {
-        BankDTO bankDTO = bankService.createBank(bankCreateRequestDTO);
-        return new ResponseEntity<>(bankDTO, HttpStatus.CREATED);
+    public ResponseEntity<BankResponseDTO> createBank(@RequestBody BankCreateRequestDTO bankCreateRequestDTO) {
+        BankResponseDTO bankResponseDTO = bankService.createBank(bankCreateRequestDTO);
+        return new ResponseEntity<>(bankResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{name}")
-    public ResponseEntity<BankDTO> updateBank(@PathVariable String name, @RequestBody BankUpdateRequestDTO bankUpdateRequestDTO) {
-        BankDTO bankDTO = bankService.updateBank(name, bankUpdateRequestDTO);
-        return new ResponseEntity<>(bankDTO, HttpStatus.OK);
+    public ResponseEntity<BankResponseDTO> updateBank(@PathVariable String name, @RequestBody BankUpdateRequestDTO bankUpdateRequestDTO) {
+        BankResponseDTO bankResponseDTO = bankService.updateBank(name, bankUpdateRequestDTO);
+        return new ResponseEntity<>(bankResponseDTO, HttpStatus.OK);
     }
     @DeleteMapping("/delete/{name}")
     public ResponseEntity<Void> deleteBankByid(@PathVariable String name) {

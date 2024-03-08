@@ -1,16 +1,18 @@
-package com.ms001.bank.dto;
+package com.ms001.bank.dto.response;
 
-import com.ms001.bank.constant.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionDTO {
+public class AccountResponseDTO {
     private Long id;
-    private TransactionType transactionType;
+    private double balanceTotal;
+    private Long customerId;
+    private List<Long> cardIds;
 }

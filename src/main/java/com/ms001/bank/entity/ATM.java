@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class ATM {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +29,8 @@ public class ATM {
     @JoinColumn(name = "bank_id")
     private Bank bank;
 
-    public ATM(String location, Bank bank) {
-        this.location = location;
-        this.bank = bank;
+    public ATM() {
+
         // Set default supported services as needed
         this.supportedServices = List.of(
                 SupportedServicesType.CASH_WITHDRAWAL,

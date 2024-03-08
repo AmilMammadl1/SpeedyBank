@@ -1,6 +1,6 @@
 package com.ms001.bank.service.Impl;
 
-import com.ms001.bank.dto.TransactionDTO;
+import com.ms001.bank.dto.response.TransactionResponseDTO;
 import com.ms001.bank.dto.request.TransactionRequestDTO;
 import com.ms001.bank.entity.Transaction;
 import com.ms001.bank.repository.TransactionRepository;
@@ -18,27 +18,27 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
     private ModelMapper modelMapper;
     @Override
-    public List<TransactionDTO> getAllTransaction() {
+    public List<TransactionResponseDTO> getAllTransaction() {
         List<Transaction> transactions = transactionRepository.findAll();
-        List<TransactionDTO> transactionDTOS = transactions.stream()
-                .map(transaction -> modelMapper.map(transaction, TransactionDTO.class)).collect(Collectors.toList());
-        return transactionDTOS;
+        List<TransactionResponseDTO> transactionResponseDTOS = transactions.stream()
+                .map(transaction -> modelMapper.map(transaction, TransactionResponseDTO.class)).collect(Collectors.toList());
+        return transactionResponseDTOS;
     }
 
     @Override
-    public TransactionDTO getTransactionById(Long id) {
+    public TransactionResponseDTO getTransactionById(Long id) {
         Transaction transaction = transactionRepository.findById(id).orElseThrow();
-        TransactionDTO transactionDTO = modelMapper.map(transaction, TransactionDTO.class);
-        return transactionDTO;
+        TransactionResponseDTO transactionResponseDTO = modelMapper.map(transaction, TransactionResponseDTO.class);
+        return transactionResponseDTO;
     }
 
     @Override
-    public TransactionDTO createTransaction(TransactionRequestDTO transactionRequestDTO) {
+    public TransactionResponseDTO createTransaction(TransactionRequestDTO transactionRequestDTO) {
         Transaction transaction = new Transaction();
         transaction.setTransactionType(transactionRequestDTO.getTransactionType());
         Transaction savedTransaction = transactionRepository.save(transaction);
-        TransactionDTO transactionDTO = modelMapper.map(savedTransaction, TransactionDTO.class);
-        return transactionDTO;
+        TransactionResponseDTO transactionResponseDTO = modelMapper.map(savedTransaction, TransactionResponseDTO.class);
+        return transactionResponseDTO;
     }
 
     @Override

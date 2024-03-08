@@ -1,6 +1,6 @@
 package com.ms001.bank.service.Impl;
 
-import com.ms001.bank.dto.DepartmentDTO;
+import com.ms001.bank.dto.response.DepartmentResponseDTO;
 import com.ms001.bank.dto.request.DepartmentRequestDTO;
 import com.ms001.bank.entity.Bank;
 import com.ms001.bank.entity.Department;
@@ -27,21 +27,21 @@ public class DepartmentServiceImpl implements DepartmentService {
     private BankRepository bankRepository;
 
     @Override
-    public List<DepartmentDTO> getAllDepartments() {
+    public List<DepartmentResponseDTO> getAllDepartments() {
         List<Department> all = departmentRepository.findAll();
-        List<DepartmentDTO> collect = all.stream().map(department -> modelMapper.map(department, DepartmentDTO.class)).collect(Collectors.toList());
+        List<DepartmentResponseDTO> collect = all.stream().map(department -> modelMapper.map(department, DepartmentResponseDTO.class)).collect(Collectors.toList());
         return collect;
     }
 
     @Override
-    public DepartmentDTO getDepartmentById(Long id) {
+    public DepartmentResponseDTO getDepartmentById(Long id) {
         Department department = departmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
-        DepartmentDTO map = modelMapper.map(department, DepartmentDTO.class);
+        DepartmentResponseDTO map = modelMapper.map(department, DepartmentResponseDTO.class);
         return map;
     }
 
     @Override
-    public DepartmentDTO createDepartment(DepartmentRequestDTO departmentRequestDTO) {
+    public DepartmentResponseDTO createDepartment(DepartmentRequestDTO departmentRequestDTO) {
         Department department = new Department();
 
         Bank bank = bankRepository.findById(departmentRequestDTO.getBankName()).orElseThrow(() -> new RuntimeException("Bank not found with specified name: " + departmentRequestDTO.getBankName()));
@@ -61,12 +61,12 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.setBank(bank);
         department.setEmployees(employees);
         Department savedDepartment = departmentRepository.save(department);
-        DepartmentDTO map = modelMapper.map(savedDepartment, DepartmentDTO.class);
+        DepartmentResponseDTO map = modelMapper.map(savedDepartment, DepartmentResponseDTO.class);
         return map;
     }
 
     @Override
-    public DepartmentDTO updateDepartment(DepartmentRequestDTO departmentRequestDTO, Long id) {
+    public DepartmentResponseDTO updateDepartment(DepartmentRequestDTO departmentRequestDTO, Long id) {
 
         Bank bank = bankRepository.findById(departmentRequestDTO.getBankName()).orElseThrow(() -> new RuntimeException("Bank not found with specified name: " + departmentRequestDTO.getBankName()));
 //        Department department = departmentRepository.findById(id)
@@ -93,7 +93,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             department.setBank(bank);
             department.setEmployees(employees);
             Department savedDepartment = departmentRepository.save(department);
-            DepartmentDTO map = modelMapper.map(savedDepartment, DepartmentDTO.class);
+            DepartmentResponseDTO map = modelMapper.map(savedDepartment, DepartmentResponseDTO.class);
             return map;
         }
         return null;

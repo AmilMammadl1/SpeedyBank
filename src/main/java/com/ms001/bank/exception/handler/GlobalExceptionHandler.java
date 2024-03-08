@@ -14,6 +14,12 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(exception.getMessage());
     }
+    @ExceptionHandler({CustomerNotFoundException.class})
+    public ResponseEntity<Object> handleCustomerNotFoundException(CustomerNotFoundException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
+    }
 
     @ExceptionHandler({ATMNotFoundException.class})
     public ResponseEntity<Object> handleATMNotFoundException(ATMNotFoundException exception) {

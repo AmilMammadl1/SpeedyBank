@@ -1,10 +1,7 @@
 package com.ms001.bank.controller;
 
-import com.ms001.bank.dto.BranchDTO;
-import com.ms001.bank.dto.DepartmentDTO;
-import com.ms001.bank.dto.request.BranchRequestDTO;
+import com.ms001.bank.dto.response.DepartmentResponseDTO;
 import com.ms001.bank.dto.request.DepartmentRequestDTO;
-import com.ms001.bank.service.BranchService;
 import com.ms001.bank.service.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,27 +17,27 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
-        List<DepartmentDTO> allDepartments = departmentService.getAllDepartments();
+    public ResponseEntity<List<DepartmentResponseDTO>> getAllDepartments() {
+        List<DepartmentResponseDTO> allDepartments = departmentService.getAllDepartments();
         return new ResponseEntity<>(allDepartments, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DepartmentDTO> getDepartmentById(@PathVariable Long id) {
-        DepartmentDTO departmentDTO = departmentService.getDepartmentById(id);
-        return new ResponseEntity<>(departmentDTO, HttpStatus.OK);
+    public ResponseEntity<DepartmentResponseDTO> getDepartmentById(@PathVariable Long id) {
+        DepartmentResponseDTO departmentResponseDTO = departmentService.getDepartmentById(id);
+        return new ResponseEntity<>(departmentResponseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<DepartmentDTO> createDepartment(@RequestBody DepartmentRequestDTO departmentRequestDTO) {
-        DepartmentDTO departmentDTO = departmentService.createDepartment(departmentRequestDTO);
-        return new ResponseEntity<>(departmentDTO, HttpStatus.CREATED);
+    public ResponseEntity<DepartmentResponseDTO> createDepartment(@RequestBody DepartmentRequestDTO departmentRequestDTO) {
+        DepartmentResponseDTO departmentResponseDTO = departmentService.createDepartment(departmentRequestDTO);
+        return new ResponseEntity<>(departmentResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<DepartmentDTO> updateDepartment(@PathVariable Long id, @RequestBody DepartmentRequestDTO departmentRequestDTO) {
-        DepartmentDTO departmentDTO = departmentService.updateDepartment(departmentRequestDTO, id);
-        return new ResponseEntity<>(departmentDTO, HttpStatus.OK);
+    public ResponseEntity<DepartmentResponseDTO> updateDepartment(@PathVariable Long id, @RequestBody DepartmentRequestDTO departmentRequestDTO) {
+        DepartmentResponseDTO departmentResponseDTO = departmentService.updateDepartment(departmentRequestDTO, id);
+        return new ResponseEntity<>(departmentResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

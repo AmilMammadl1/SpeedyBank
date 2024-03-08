@@ -4,7 +4,6 @@ import com.ms001.bank.constant.CardType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.*;
@@ -22,8 +21,8 @@ public class Account {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @OneToOne
-    @JoinColumn(name = "user_id", unique = true)
-    private User user;
+    @JoinColumn(name = "customer_id", unique = true)
+    private Customer customer;
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Card> cards = new ArrayList<>();
     public Account() {

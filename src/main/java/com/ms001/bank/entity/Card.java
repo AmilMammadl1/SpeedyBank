@@ -50,9 +50,9 @@ public class Card {
         this.createdAt = new Date();
         this.account = account;
     }
-    public void updateBalance(Transaction transaction) {
+    public void updateBalance(Transaction transaction,double transactionAmount) {
         double currentBalance = getBalance();
-        double transactionAmount = transaction.getAmount();
+//        double transactionAmount = transaction.getAmount();
 
         // Adjust for withdrawals
         if (TransactionType.WITHDRAWAL.equals(transaction.getTransactionType())) {

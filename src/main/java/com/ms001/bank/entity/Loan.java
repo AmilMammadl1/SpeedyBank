@@ -18,6 +18,6 @@ public class Loan {
     private Double amount;
     private String term;
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }

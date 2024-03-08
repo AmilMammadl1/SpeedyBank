@@ -1,14 +1,14 @@
 package com.ms001.bank.service;
 
-import com.ms001.bank.dto.DepartmentDTO;
+import com.ms001.bank.dto.response.DepartmentResponseDTO;
 import com.ms001.bank.dto.request.DepartmentRequestDTO;
 
 import java.util.List;
 
 public interface DepartmentService {
-    List<DepartmentDTO> getAllDepartments();
-    DepartmentDTO getDepartmentById(Long id);
-    DepartmentDTO updateDepartment(DepartmentRequestDTO departmentRequestDTO, Long id);
-    DepartmentDTO createDepartment(DepartmentRequestDTO departmentRequestDTO);
+    List<DepartmentResponseDTO> getAllDepartments();
+    DepartmentResponseDTO getDepartmentById(Long id);
+    DepartmentResponseDTO updateDepartment(DepartmentRequestDTO departmentRequestDTO, Long id);
+    DepartmentResponseDTO createDepartment(DepartmentRequestDTO departmentRequestDTO);
     void deleteDepartment(Long id);
 }

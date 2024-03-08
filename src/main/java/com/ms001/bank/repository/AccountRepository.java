@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface AccountRepository extends JpaRepository<Account,Long> {
-    @Query("DELETE FROM Account a WHERE a.user.id = :userId")
-    void deleteAccountByUserId(Long userId);
+    @Query("DELETE FROM Account a WHERE a.customer.id = :userId")
+    void deleteAccountByCustomerId(Long userId);
 }

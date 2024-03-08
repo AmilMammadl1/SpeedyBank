@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateRequestDTO {
-    private String firstName;
-    private String lastName;
-    private String fatherName;
-//    private String password;
-    private String phoneNumber;
+public class BranchCreateRequestDTO {
+    private String branchName;
+    private String location;
+    private String bankName;
 }
