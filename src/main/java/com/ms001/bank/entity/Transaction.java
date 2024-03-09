@@ -16,12 +16,14 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "name", unique = true, nullable = false, columnDefinition = "varchar(255) default 'defaultValue'")
+    private String name;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
-    public Transaction() {
+    public Transaction(TransactionType transactionType) {
+        this.name = transactionType.name();
     }
 }

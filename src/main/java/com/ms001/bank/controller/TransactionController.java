@@ -1,7 +1,7 @@
 package com.ms001.bank.controller;
 
 import com.ms001.bank.dto.response.TransactionResponseDTO;
-import com.ms001.bank.dto.request.TransactionRequestDTO;
+import com.ms001.bank.dto.request.TransactionCreateRequestDTO;
 import com.ms001.bank.service.TransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,20 +23,20 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TransactionResponseDTO> getTransactionById(@PathVariable Long id) {
-        TransactionResponseDTO transactionResponseDTO = transactionService.getTransactionById(id);
+    public ResponseEntity<TransactionResponseDTO> getTransactionById(@PathVariable String name) {
+        TransactionResponseDTO transactionResponseDTO = transactionService.getTransactionById(name);
         return new ResponseEntity<>(transactionResponseDTO, HttpStatus.OK);
     }
     @PostMapping("/create")
-    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody TransactionRequestDTO transactionRequestDTO) {
-        TransactionResponseDTO transactionResponseDTO = transactionService.createTransaction(transactionRequestDTO);
+    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody TransactionCreateRequestDTO transactionCreateRequestDTO) {
+        TransactionResponseDTO transactionResponseDTO = transactionService.createTransaction(transactionCreateRequestDTO);
         return new ResponseEntity<>(transactionResponseDTO, HttpStatus.OK);
     }
 
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteTransactionById(@PathVariable Long id) {
-        transactionService.deleteTransaction(id);
+    @DeleteMapping("/delete/{name}")
+    public ResponseEntity<Void> deleteTransactionById(@PathVariable String name) {
+        transactionService.deleteTransaction(name);
         return ResponseEntity.noContent().build();
     }
 }

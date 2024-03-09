@@ -14,5 +14,6 @@ public class AccountResponseDTO {
     private Long id;
     private double balanceTotal;
     private Long customerId;
+    private boolean isActive;
     private List<Long> cardIds;
 }

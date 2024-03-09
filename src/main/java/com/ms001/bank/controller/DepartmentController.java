@@ -1,7 +1,8 @@
 package com.ms001.bank.controller;
 
+import com.ms001.bank.dto.request.DepartmentUpdateRequestDTO;
 import com.ms001.bank.dto.response.DepartmentResponseDTO;
-import com.ms001.bank.dto.request.DepartmentRequestDTO;
+import com.ms001.bank.dto.request.DepartmentCreateRequestDTO;
 import com.ms001.bank.service.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,14 +30,14 @@ public class DepartmentController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<DepartmentResponseDTO> createDepartment(@RequestBody DepartmentRequestDTO departmentRequestDTO) {
-        DepartmentResponseDTO departmentResponseDTO = departmentService.createDepartment(departmentRequestDTO);
+    public ResponseEntity<DepartmentResponseDTO> createDepartment(@RequestBody DepartmentCreateRequestDTO departmentCreateRequestDTO) {
+        DepartmentResponseDTO departmentResponseDTO = departmentService.createDepartment(departmentCreateRequestDTO);
         return new ResponseEntity<>(departmentResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<DepartmentResponseDTO> updateDepartment(@PathVariable Long id, @RequestBody DepartmentRequestDTO departmentRequestDTO) {
-        DepartmentResponseDTO departmentResponseDTO = departmentService.updateDepartment(departmentRequestDTO, id);
+    public ResponseEntity<DepartmentResponseDTO> updateDepartment(@PathVariable Long id, @RequestBody DepartmentUpdateRequestDTO departmentUpdateRequestDTO) {
+        DepartmentResponseDTO departmentResponseDTO = departmentService.updateDepartment(departmentUpdateRequestDTO, id);
         return new ResponseEntity<>(departmentResponseDTO, HttpStatus.OK);
     }
 

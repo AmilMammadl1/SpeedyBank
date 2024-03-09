@@ -12,7 +12,6 @@ import java.util.*;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 public class Card {
@@ -41,26 +40,29 @@ public class Card {
         // Concatenate the prefix and unique portion to create the full card number
         return prefix + uniquePortion;
     }
-    public Card(CardType cardType, Account account) {
+    public Card() {
         this.cardNumber = generateUniqueCardNumber();
         this.expirationDate = calculateExpirationDate();
-        this.cardType = cardType;
         this.isActive = true;
         this.balance = 0.0;
         this.createdAt = new Date();
-        this.account = account;
+
     }
-    public void updateBalance(Transaction transaction,double transactionAmount) {
+    public double updateBalance(Transaction transaction,double transactionAmount) {
         double currentBalance = getBalance();
+        double resultBalance = currentBalance;
 //        double transactionAmount = transaction.getAmount();
 
         // Adjust for withdrawals
         if (TransactionType.WITHDRAWAL.equals(transaction.getTransactionType())) {
             transactionAmount *= -1;
+            resultBalance = transactionAmount + currentBalance;
         }
-
-        double newBalance = currentBalance + transactionAmount;
-        setBalance(newBalance);
+        else if (TransactionType.DEPOSIT.equals(transaction.getTransactionType())) {
+            transactionAmount *= 1;
+            resultBalance = transactionAmount + currentBalance;
+        }
+        return resultBalance;
     }
     private Date calculateExpirationDate() {
         // Implement your logic to calculate the expiration date, for example adding 3 years to the current date

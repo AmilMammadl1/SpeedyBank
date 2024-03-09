@@ -1,7 +1,8 @@
 package com.ms001.bank.controller;
 
+import com.ms001.bank.dto.request.EmployeeUpdateRequestDTO;
 import com.ms001.bank.dto.response.EmployeeResponseDTO;
-import com.ms001.bank.dto.request.EmployeeRequestDTO;
+import com.ms001.bank.dto.request.EmployeeCreateRequestDTO;
 import com.ms001.bank.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,14 +30,14 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<EmployeeResponseDTO> createEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO) {
-        EmployeeResponseDTO employeeResponseDTO = employeeService.createEmployee(employeeRequestDTO);
+    public ResponseEntity<EmployeeResponseDTO> createEmployee(@RequestBody EmployeeCreateRequestDTO employeeCreateRequestDTO) {
+        EmployeeResponseDTO employeeResponseDTO = employeeService.createEmployee(employeeCreateRequestDTO);
         return new ResponseEntity<>(employeeResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<EmployeeResponseDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeRequestDTO employeeRequestDTO) {
-        EmployeeResponseDTO employeeResponseDTO = employeeService.updateEmployee(employeeRequestDTO,id);
+    public ResponseEntity<EmployeeResponseDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeUpdateRequestDTO employeeUpdateRequestDTO) {
+        EmployeeResponseDTO employeeResponseDTO = employeeService.updateEmployee(employeeUpdateRequestDTO,id);
         return new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")

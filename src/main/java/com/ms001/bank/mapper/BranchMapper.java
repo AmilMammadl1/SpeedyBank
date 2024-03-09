@@ -16,9 +16,6 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BranchMapper {
     Branch mapBranchCreateRequestDTOToBranchEntity(BranchCreateRequestDTO branchCreateRequestDTO);
-//    @Mappings({
-//            @Mapping(target = "branch.bank.name", source = "branchUpdateRequestDTObankName")
-//    })
     Branch mapBranchUpdateRequestDTOToBranchEntity(BranchUpdateRequestDTO branchUpdateRequestDTO);
     @Mappings({
             @Mapping(target = "bankName", source = "branch.bank.name")

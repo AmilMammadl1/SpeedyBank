@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@NoArgsConstructor
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +28,7 @@ public class Customer {
     private Bank bank;
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Loan> loans = new ArrayList<>();
-    public Customer(String firstName, String lastName, String fatherName, String phoneNumber, Bank bank) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.fatherName = fatherName;
-        this.phoneNumber = phoneNumber;
-        this.bank = bank;
-
+    public Customer() {
         // Create a new Account with default values and set bidirectional relationship
         this.account = new Account();
         this.account.setCreatedAt(new Date());

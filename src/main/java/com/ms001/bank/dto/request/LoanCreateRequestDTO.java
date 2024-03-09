@@ -12,6 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoanCreateRequestDTO {
     private Double amount;
-    private String term;
-    private Long userId;
+    private Long term;
+    private Long customerId;
 }

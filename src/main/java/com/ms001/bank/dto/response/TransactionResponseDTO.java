@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionResponseDTO {
-    private Long id;
+    private String name;
     private TransactionType transactionType;
 }

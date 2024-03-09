@@ -44,7 +44,8 @@ public class BankServiceImpl implements BankService {
     public BankResponseDTO updateBank(String name, BankUpdateRequestDTO bankUpdateRequestDTO) {
         Bank bank = bankRepository.findById(name)
                 .orElseThrow(() -> new BankNotFoundException("Bank not found with name: " + name));
-        bank = bankMapper.mapBankUpdateRequestDTOToBankEntity(bankUpdateRequestDTO);
+//        bank = bankMapper.mapBankUpdateRequestDTOToBankEntity(bankUpdateRequestDTO);
+        bank.setName(name);
         Bank updatedBank = bankRepository.save(bank);
         BankResponseDTO bankResponseDTO = bankMapper.mapBankEntityToBankResponseDTO(updatedBank);
         return bankResponseDTO;

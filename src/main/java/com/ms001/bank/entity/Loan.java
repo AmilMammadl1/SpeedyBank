@@ -16,7 +16,9 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double amount;
-    private String term;
+    //    @Column(name = "term", columnDefinition = "bigint")
+    @Column(name = "term", columnDefinition = "BIGINT USING term::bigint")
+    private Long term;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

@@ -1,7 +1,7 @@
 package com.ms001.bank.controller;
 
 import com.ms001.bank.dto.response.AccountResponseDTO;
-import com.ms001.bank.dto.request.AccountRequestDTO;
+import com.ms001.bank.dto.request.AccountUpdateRequestDTO;
 import com.ms001.bank.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,8 +29,8 @@ public class AccountController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<AccountResponseDTO> createAccount(@PathVariable Long id, @RequestBody AccountRequestDTO accountRequestDTO) {
-        AccountResponseDTO accountById = accountService.updateAccount(accountRequestDTO, id);
+    public ResponseEntity<AccountResponseDTO> createAccount(@PathVariable Long id, @RequestBody AccountUpdateRequestDTO accountUpdateRequestDTO) {
+        AccountResponseDTO accountById = accountService.updateAccount(accountUpdateRequestDTO, id);
         return new ResponseEntity<>(accountById, HttpStatus.OK);
     }
 

@@ -6,15 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeRequestDTO {
-    private String firstName;
-    private String lastName;
-    private String fatherName;
-    private String email;
-    private double salary;
-    private Long departmentId;
+public class DepartmentUpdateRequestDTO {
+    private String name;
+    private String description;
+
 }
