@@ -4,6 +4,7 @@ import com.ms001.bank.dto.response.LoanResponseDTO;
 import com.ms001.bank.dto.request.LoanCreateRequestDTO;
 import com.ms001.bank.dto.request.LoanUpdateRequestDTO;
 import com.ms001.bank.service.LoanService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +36,13 @@ public class LoanController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<LoanResponseDTO> createLoan(@RequestBody LoanCreateRequestDTO loanCreateRequestDTO) {
+    public ResponseEntity<LoanResponseDTO> createLoan(@Valid @RequestBody LoanCreateRequestDTO loanCreateRequestDTO) {
         LoanResponseDTO loanResponseDTO = loanService.createLoan(loanCreateRequestDTO);
         return new ResponseEntity<>(loanResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<LoanResponseDTO> updateLoan(@PathVariable Long id, @RequestBody LoanUpdateRequestDTO updateRequestDTO) {
+    public ResponseEntity<LoanResponseDTO> updateLoan(@PathVariable Long id, @Valid @RequestBody LoanUpdateRequestDTO updateRequestDTO) {
         LoanResponseDTO loanResponseDTO = loanService.updateLoan(updateRequestDTO,id);
         return new ResponseEntity<>(loanResponseDTO, HttpStatus.OK);
     }

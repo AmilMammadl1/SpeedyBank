@@ -4,6 +4,7 @@ import com.ms001.bank.dto.request.BranchUpdateRequestDTO;
 import com.ms001.bank.dto.response.BranchResponseDTO;
 import com.ms001.bank.dto.request.BranchCreateRequestDTO;
 import com.ms001.bank.service.BranchService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,13 +31,13 @@ public class BranchController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<BranchResponseDTO> createBranch(@RequestBody BranchCreateRequestDTO branchCreateRequestDTO) {
+    public ResponseEntity<BranchResponseDTO> createBranch(@Valid @RequestBody BranchCreateRequestDTO branchCreateRequestDTO) {
         BranchResponseDTO branchResponseDTO = branchService.createBranch(branchCreateRequestDTO);
         return new ResponseEntity<>(branchResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BranchResponseDTO> updateBranch(@PathVariable Long id, @RequestBody BranchUpdateRequestDTO branchUpdateRequestDTO) {
+    public ResponseEntity<BranchResponseDTO> updateBranch(@PathVariable Long id,@Valid @RequestBody BranchUpdateRequestDTO branchUpdateRequestDTO) {
         BranchResponseDTO branchResponseDTO = branchService.updateBranch(id, branchUpdateRequestDTO);
         return new ResponseEntity<>(branchResponseDTO, HttpStatus.OK);
     }

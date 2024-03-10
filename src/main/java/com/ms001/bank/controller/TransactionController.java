@@ -3,6 +3,7 @@ package com.ms001.bank.controller;
 import com.ms001.bank.dto.response.TransactionResponseDTO;
 import com.ms001.bank.dto.request.TransactionCreateRequestDTO;
 import com.ms001.bank.service.TransactionService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class TransactionController {
         return new ResponseEntity<>(transactionResponseDTO, HttpStatus.OK);
     }
     @PostMapping("/create")
-    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody TransactionCreateRequestDTO transactionCreateRequestDTO) {
+    public ResponseEntity<TransactionResponseDTO> createTransaction(@Valid @RequestBody TransactionCreateRequestDTO transactionCreateRequestDTO) {
         TransactionResponseDTO transactionResponseDTO = transactionService.createTransaction(transactionCreateRequestDTO);
         return new ResponseEntity<>(transactionResponseDTO, HttpStatus.OK);
     }

@@ -3,6 +3,7 @@ package com.ms001.bank.controller;
 import com.ms001.bank.dto.response.AccountResponseDTO;
 import com.ms001.bank.dto.request.AccountUpdateRequestDTO;
 import com.ms001.bank.service.AccountService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class AccountController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<AccountResponseDTO> createAccount(@PathVariable Long id, @RequestBody AccountUpdateRequestDTO accountUpdateRequestDTO) {
+    public ResponseEntity<AccountResponseDTO> createAccount(@PathVariable Long id, @Valid @RequestBody AccountUpdateRequestDTO accountUpdateRequestDTO) {
         AccountResponseDTO accountById = accountService.updateAccount(accountUpdateRequestDTO, id);
         return new ResponseEntity<>(accountById, HttpStatus.OK);
     }

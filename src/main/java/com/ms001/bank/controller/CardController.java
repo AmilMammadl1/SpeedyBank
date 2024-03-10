@@ -1,9 +1,11 @@
 package com.ms001.bank.controller;
 
+import com.ms001.bank.dto.request.ProcessTransactionDTO;
 import com.ms001.bank.dto.response.CardResponseDTO;
 import com.ms001.bank.dto.request.CardCreateRequestDTO;
 import com.ms001.bank.dto.request.CardUpdateRequestDTO;
 import com.ms001.bank.service.CardService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/card")
 public class CardController {
     private CardService cardService;
+
     @GetMapping("/all")
     public ResponseEntity<List<CardResponseDTO>> getAllCards() {
         List<CardResponseDTO> allCardResponseDtos = cardService.getAllCards();
@@ -29,16 +32,23 @@ public class CardController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CardResponseDTO> createCard(@RequestBody CardCreateRequestDTO cardCreateRequestDTO) {
-        CardResponseDTO cardResponseDTO = cardService.createCard( cardCreateRequestDTO);
+    public ResponseEntity<CardResponseDTO> createCard(@Valid @RequestBody CardCreateRequestDTO cardCreateRequestDTO) {
+        CardResponseDTO cardResponseDTO = cardService.createCard(cardCreateRequestDTO);
         return new ResponseEntity<>(cardResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<CardResponseDTO> updateCard(@PathVariable Long id, @RequestBody CardUpdateRequestDTO cardUpdateRequestDTO) {
-        CardResponseDTO cardResponseDTO = cardService.updateCard(cardUpdateRequestDTO,id);
+    public ResponseEntity<CardResponseDTO> updateCard(@PathVariable Long id, @Valid @RequestBody CardUpdateRequestDTO cardUpdateRequestDTO) {
+        CardResponseDTO cardResponseDTO = cardService.updateCard(cardUpdateRequestDTO, id);
         return new ResponseEntity<>(cardResponseDTO, HttpStatus.OK);
     }
+    @PutMapping("/card/transaction")
+    public ResponseEntity<CardResponseDTO> CardTransaction(@Valid @RequestBody ProcessTransactionDTO processTransactionDTO) {
+        CardResponseDTO cardResponseDTO = cardService.CardTransaction(processTransactionDTO);
+        return new ResponseEntity<>(cardResponseDTO, HttpStatus.OK);
+
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCardByid(@PathVariable Long id) {
         cardService.deleteCard(id);

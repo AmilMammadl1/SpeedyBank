@@ -4,6 +4,7 @@ import com.ms001.bank.dto.request.ATMCreateRequestDTO;
 import com.ms001.bank.dto.request.ATMUpdateRequestDTO;
 import com.ms001.bank.dto.response.ATMResponseDTO;
 import com.ms001.bank.service.ATMService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,16 +31,17 @@ public class ATMController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ATMResponseDTO> createATM(@RequestBody ATMCreateRequestDTO atmCreateRequestDTO) {
+    public ResponseEntity<ATMResponseDTO> createATM(@Valid @RequestBody ATMCreateRequestDTO atmCreateRequestDTO) {
         ATMResponseDTO ATMResponseDTO = atmService.createATM(atmCreateRequestDTO);
         return new ResponseEntity<>(ATMResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ATMResponseDTO> updateATM(@PathVariable Long id, @RequestBody ATMUpdateRequestDTO atmUpdateRequestDTO) {
+    public ResponseEntity<ATMResponseDTO> updateATM(@PathVariable Long id, @Valid @RequestBody ATMUpdateRequestDTO atmUpdateRequestDTO) {
         ATMResponseDTO ATMResponseDTO = atmService.updateATM(id, atmUpdateRequestDTO);
         return new ResponseEntity<>(ATMResponseDTO, HttpStatus.OK);
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteATMByid(@PathVariable Long id) {
         atmService.deleteATM(id);

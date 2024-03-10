@@ -4,6 +4,7 @@ import com.ms001.bank.dto.response.CustomerResponseDTO;
 import com.ms001.bank.dto.request.CustomerCreateRequestDTO;
 import com.ms001.bank.dto.request.CustomerUpdateRequestDTO;
 import com.ms001.bank.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,13 @@ public class CustomerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CustomerResponseDTO> createUser(@RequestBody CustomerCreateRequestDTO customerCreateRequestDTO) {
+    public ResponseEntity<CustomerResponseDTO> createUser(@Valid @RequestBody CustomerCreateRequestDTO customerCreateRequestDTO) {
         CustomerResponseDTO customerResponseDTO = customerService.createUser(customerCreateRequestDTO);
         return new ResponseEntity<>(customerResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<CustomerResponseDTO> updateUser(@PathVariable Long id, @RequestBody CustomerUpdateRequestDTO updateRequestDTO) {
+    public ResponseEntity<CustomerResponseDTO> updateUser(@PathVariable Long id, @Valid @RequestBody CustomerUpdateRequestDTO updateRequestDTO) {
         CustomerResponseDTO customerResponseDTO = customerService.updateUser(updateRequestDTO,id);
         return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
     }

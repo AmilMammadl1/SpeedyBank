@@ -1,6 +1,5 @@
 package com.ms001.bank.service.Impl;
 
-import com.ms001.bank.constant.TransactionType;
 import com.ms001.bank.dto.request.ProcessTransactionDTO;
 import com.ms001.bank.dto.response.CardResponseDTO;
 import com.ms001.bank.dto.request.CardCreateRequestDTO;
@@ -14,9 +13,7 @@ import com.ms001.bank.exception.TransactionNotFoundException;
 import com.ms001.bank.mapper.CardMapper;
 import com.ms001.bank.repository.*;
 import com.ms001.bank.service.CardService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +26,8 @@ public class CardServiceImpl implements CardService {
     private TransactionRepository transactionRepository;
     private AccountRepository accountRepository;
     private CardRepository cardRepository;
-
-    public void processTransaction(ProcessTransactionDTO processTransactionDTO) {
+    @Override
+    public CardResponseDTO CardTransaction(ProcessTransactionDTO processTransactionDTO) {
         Long cardId = processTransactionDTO.getId();
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new CardNotFoundException("Card not found with ID: " + cardId));
@@ -40,19 +37,11 @@ public class CardServiceImpl implements CardService {
         }
         double updateBalance = card.updateBalance(transaction, processTransactionDTO.getAmount());
         card.setBalance(updateBalance);
-        cardRepository.save(card);
 
+        Card updatedCardWithTransaction = cardRepository.save(card);
+        CardResponseDTO cardResponseDTO = cardMapper.mapCardEntityToCardResponseDTO(updatedCardWithTransaction);
+        return cardResponseDTO;
 
-//
-//        Transaction transaction = new Transaction();
-//        transaction.setTransactionType(transactionType);
-
-//        // Save the transaction
-//        transactionRepository.save(transaction);
-//
-//        // Update the card balance based on the transaction type
-////        card.updateBalance(transaction);
-//        cardRepository.save(card);
     }
 
     @Override

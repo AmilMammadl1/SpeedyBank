@@ -1,6 +1,9 @@
 package com.ms001.bank.dto.request;
 
 import com.ms001.bank.constant.SupportedServicesType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ATMUpdateRequestDTO {
+    @NotBlank(message = "Location name cannot be blank")
+    @Size(max = 255, message = "Location name cannot exceed 255 characters")
     private String location;
+    @NotNull(message = "Supported services list cannot be null")
     private List<SupportedServicesType> supportedServices;
 }
