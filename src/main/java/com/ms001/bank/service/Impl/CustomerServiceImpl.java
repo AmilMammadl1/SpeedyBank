@@ -13,6 +13,9 @@ import com.ms001.bank.repository.CustomerRepository;
 import com.ms001.bank.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponseDTO getUserById(Long id) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: "+ id));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + id));
         CustomerResponseDTO customerResponseDTO = customerMapper.mapCustomerEntityToEmployeeResponseDTO(customer);
         return customerResponseDTO;
     }
@@ -45,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponseDTO updateUser(CustomerUpdateRequestDTO customerUpdateRequestDTO, Long id) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: "+ id));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + id));
         customer.setFirstName(customerUpdateRequestDTO.getFirstName());
         customer.setLastName(customerUpdateRequestDTO.getLastName());
         customer.setFatherName(customerUpdateRequestDTO.getFatherName());
@@ -58,7 +61,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponseDTO createUser(CustomerCreateRequestDTO customerCreateRequestDTO) {
         String bankName = customerCreateRequestDTO.getBankName();
-        Bank bank = bankRepository.findById(bankName).orElseThrow(()->new BankNotFoundException("Bank not found with name: "+bankName));
+        Bank bank = bankRepository.findById(bankName)
+                .orElseThrow(() -> new BankNotFoundException("Bank not found with name: " + bankName));
         Customer customer = customerMapper.mapCustomerCreateRequestDTOToCustomerEntity(customerCreateRequestDTO);
         customer.setBank(bank);
         Customer createdCustomer = customerRepository.save(customer);
@@ -69,7 +73,20 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteUser(Long id) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: "+ id));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + id));
         customerRepository.deleteById(id);
+    }
+
+    //UserDetailsService is an interface provided by Spring Security, which is used to retrieve user-related data (such as user details and authorities) during the authentication process
+    @Override
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            //loadUserByUsername method returns an instance of UserDetails, which is another interface in Spring Security. UserDetails represents a user's core information (such as username, password, and authorities) and is used by Spring Security to perform authentication and authorization.
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                return customerRepository.findByFinCode(username)
+                        .orElseThrow(() -> new CustomerNotFoundException("Customer not found with fincode: " + username));
+            }
+        };
     }
 }
