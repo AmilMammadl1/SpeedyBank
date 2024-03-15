@@ -28,7 +28,14 @@ public class SecurityConfiguration {
 
     @Bean //bean for security filter chain
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**").permitAll().requestMatchers("api/v1/admin").hasAnyAuthority(Role.SENIOR_DEV.name()).requestMatchers("api/v1/user").hasAnyAuthority(Role.USER.name()).anyRequest().authenticated()).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authenticationProvider(authenicationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf(AbstractHttpConfigurer::disable).
+                authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
+                        .permitAll().requestMatchers("api/admin").hasAnyAuthority(Role.DEVELOPER.name())
+                        .requestMatchers("api/customr").hasAnyAuthority(Role.USER.name())
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenicationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -44,7 +51,6 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

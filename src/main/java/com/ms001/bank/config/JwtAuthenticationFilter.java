@@ -1,6 +1,7 @@
 package com.ms001.bank.config;
 
 import com.ms001.bank.service.CustomerService;
+import com.ms001.bank.service.EmployeeService;
 import com.ms001.bank.service.jwt.JWTService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
@@ -24,6 +25,8 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
     private final CustomerService customerService;
+    private final EmployeeService employeeService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -33,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authoriation"); //get Authoriation header from request
         final String jwt; // store the our jwt in String
-        final String userFinCode; // store the customer's fincode in String
+        final String username; // store the customer's fincode in String
 
         //check authHeader is empty or not
         if (StringUtils.isEmpty(authHeader) || !org.apache.commons.lang3.StringUtils.startsWith(authHeader, "Bearer ")) {
@@ -41,11 +44,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwt = authHeader.substring(7);
-        userFinCode = jwtService.extractUsername(jwt);
+        username = jwtService.extractUsername(jwt);
 
         //SecurityContextHolder.getContext().getAuthentication() == null, it means that there is no authenticated user currently in the security context
-        if (StringUtils.isNotEmpty(userFinCode) && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = customerService.userDetailsService().loadUserByUsername(userFinCode);
+        if (StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails =  null;
+            try {
+                userDetails = customerService.userDetailsService().loadUserByUsername(username);
+            } catch (Exception exception) {
+                // If the user is not found in the customer service, try employee service
+                try {
+                    userDetails = employeeService.userDetailsService().loadUserByUsername(username);
+                } catch (Exception employeeNotFoundException) {
+                    // Handle the case when the user is not found in both customer and employee services
+                    // You might want to log this event or handle it based on your application's requirements
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");
+                    return;
+                }
+            }
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext(); //The SecurityContext is used to store security-related information for the current thread of execution. This information typically includes details about the current principal (user), their authentication status, and potentially other security-related attributes.
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken( //UsernamePasswordAuthenticationToken is created upon successful login.
@@ -56,9 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 securityContext.setAuthentication(token);//you're effectively establishing the identity of the current user within the security context.
                 SecurityContextHolder.setContext(securityContext);
             }
-
         }
         filterChain.doFilter(request, response);
-
     }
 }

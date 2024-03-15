@@ -23,6 +23,9 @@ public class EmployeeCreateRequestDTO {
     @Size(max = 255, message = "Fathername cannot exceed 255 characters")
     @NotBlank(message = "Fathername cannot be blank")
     private String fatherName;
+    @NotBlank(message = "password name cannot be blank")
+    @Size(max = 255, message = "password name cannot exceed 255 characters")
+    private String password;
     @Email(message = "Email provide a valid email address")
     private String email;
     @NotNull(message = "Salary cannot be null")
