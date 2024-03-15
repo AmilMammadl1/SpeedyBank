@@ -1,8 +1,12 @@
 package com.ms001.bank.service.Impl;
 
+import com.ms001.bank.constant.Role;
+import com.ms001.bank.dto.request.CustomerSignInRequest;
+import com.ms001.bank.dto.request.RefreshTokenRequest;
 import com.ms001.bank.dto.response.CustomerResponseDTO;
 import com.ms001.bank.dto.request.CustomerCreateRequestDTO;
 import com.ms001.bank.dto.request.CustomerUpdateRequestDTO;
+import com.ms001.bank.dto.response.JwtAuthenticationResponse;
 import com.ms001.bank.entity.Bank;
 import com.ms001.bank.entity.Customer;
 import com.ms001.bank.exception.BankNotFoundException;
@@ -11,13 +15,18 @@ import com.ms001.bank.mapper.CustomerMapper;
 import com.ms001.bank.repository.BankRepository;
 import com.ms001.bank.repository.CustomerRepository;
 import com.ms001.bank.service.CustomerService;
+import com.ms001.bank.service.jwt.JWTService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +36,9 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerMapper customerMapper;
     private CustomerRepository customerRepository;
     private BankRepository bankRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
 
     @Override
     public List<CustomerResponseDTO> getAllUsers() {
@@ -59,12 +71,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerResponseDTO createUser(CustomerCreateRequestDTO customerCreateRequestDTO) {
+    public CustomerResponseDTO signUp(CustomerCreateRequestDTO customerCreateRequestDTO) {
         String bankName = customerCreateRequestDTO.getBankName();
         Bank bank = bankRepository.findById(bankName)
                 .orElseThrow(() -> new BankNotFoundException("Bank not found with name: " + bankName));
         Customer customer = customerMapper.mapCustomerCreateRequestDTOToCustomerEntity(customerCreateRequestDTO);
         customer.setBank(bank);
+        customer.setPasswrd(passwordEncoder.encode(customerCreateRequestDTO.getPassword()));
+        customer.setRole(Role.USER);
         Customer createdCustomer = customerRepository.save(customer);
         CustomerResponseDTO customerResponseDTO = customerMapper.mapCustomerEntityToEmployeeResponseDTO(createdCustomer);
         return customerResponseDTO;
@@ -88,5 +102,32 @@ public class CustomerServiceImpl implements CustomerService {
                         .orElseThrow(() -> new CustomerNotFoundException("Customer not found with fincode: " + username));
             }
         };
+    }
+
+    public JwtAuthenticationResponse signIn(CustomerSignInRequest customerSignInRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(customerSignInRequest.getFinCode(),
+                customerSignInRequest.getPassword()));
+        var customer = customerRepository.findByFinCode(customerSignInRequest.getFinCode())
+                .orElseThrow(() -> new IllegalArgumentException("Username or password is invalid"));
+        var jwt = jwtService.generateToken(customer);
+        var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), customer);
+        JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+        jwtAuthenticationResponse.setToken(jwt);
+        jwtAuthenticationResponse.setRefreshToken(refreshToken);
+
+        return jwtAuthenticationResponse;
+    }
+
+    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        String customeFincode = jwtService.extractUsername(refreshTokenRequest.getToken());
+        Customer customer = customerRepository.findByFinCode(customeFincode).orElseThrow();
+        if (jwtService.isTokenValid(refreshTokenRequest.getToken(), customer)) {
+            var jwt = jwtService.generateToken(customer);
+            JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+            jwtAuthenticationResponse.setToken(jwt);
+            jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
+            return jwtAuthenticationResponse;
+        }
+        return null;
     }
 }

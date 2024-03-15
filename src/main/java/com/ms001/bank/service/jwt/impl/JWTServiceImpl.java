@@ -1,5 +1,6 @@
 package com.ms001.bank.service.jwt.impl;
 
+import com.ms001.bank.entity.Customer;
 import com.ms001.bank.service.jwt.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -53,6 +56,18 @@ public class JWTServiceImpl implements JWTService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    @Override
+    public String generateRefreshToken(Map<String, Object> exctraClaims, UserDetails userDetails) {
+        return Jwts
+                .builder()//starts the process of creating a new JWT token,
+                .setClaims(exctraClaims)
+                .subject(userDetails.getUsername()) //subject is customer fincode,set the subject claim of the JWT token, you are essentially specifying which user the token is issued for,represents the identity of the user or entity associated with the token.
+                .setIssuedAt(new Date((System.currentTimeMillis()))) //sets the "issued at" claim of the JWT token to the current time
+                .setExpiration(new Date(System.currentTimeMillis() + 604800000)) // sets the expiration time of the token. Here, 1000*24*60 represents 24 hours in milliseconds
+                .signWith(getSignKey(), SignatureAlgorithm.ES256)//Yani, SignatureAlgorithm belirli bir algoritmayı seçerek kriptografik anahtarın nasıl kullanılacağını tanımlar ve bu sayede JWT tokeninin imzalanması ve doğrulanması için gerekli olan işlemleri belirler. Kriptografik anahtar ise seçilen bu algoritmanın işlevini yerine getirmesi için kullanılan bir parçadır.
+                .compact();
     }
 
     private boolean isTokenExpired(String token) {

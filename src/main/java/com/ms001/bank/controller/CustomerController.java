@@ -29,11 +29,6 @@ public class CustomerController {
         return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<CustomerResponseDTO> createUser(@Valid @RequestBody CustomerCreateRequestDTO customerCreateRequestDTO) {
-        CustomerResponseDTO customerResponseDTO = customerService.createUser(customerCreateRequestDTO);
-        return new ResponseEntity<>(customerResponseDTO, HttpStatus.CREATED);
-    }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<CustomerResponseDTO> updateUser(@PathVariable Long id, @Valid @RequestBody CustomerUpdateRequestDTO updateRequestDTO) {

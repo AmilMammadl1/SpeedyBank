@@ -24,7 +24,9 @@ public class CustomerCreateRequestDTO {
     @NotBlank(message = "father name cannot be blank")
     @Size(max = 255, message = "father name cannot exceed 255 characters")
     private String fatherName;
-    //    private String password;
+    @NotBlank(message = "father name cannot be blank")
+    @Size(max = 255, message = "father name cannot exceed 255 characters")
+    private String password;
     @NotBlank(message = "phone number cannot be blank")
     @Size(max = 255, message = "phone number cannot exceed 255 characters")
     private String phoneNumber;
