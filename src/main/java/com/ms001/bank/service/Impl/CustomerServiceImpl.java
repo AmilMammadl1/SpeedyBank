@@ -91,19 +91,6 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.deleteById(id);
     }
 
-    //UserDetailsService is an interface provided by Spring Security, which is used to retrieve user-related data (such as user details and authorities) during the authentication process
-    @Override
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            //loadUserByUsername method returns an instance of UserDetails, which is another interface in Spring Security. UserDetails represents a user's core information (such as username, password, and authorities) and is used by Spring Security to perform authentication and authorization.
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return customerRepository.findByFinCode(username)
-                        .orElseThrow(() -> new CustomerNotFoundException("Customer not found with fincode: " + username));
-            }
-        };
-    }
-
     public JwtAuthenticationResponse signIn(CustomerSignInRequest customerSignInRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(customerSignInRequest.getFinCode(),
                 customerSignInRequest.getPassword()));
@@ -130,4 +117,6 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return null;
     }
+
+
 }

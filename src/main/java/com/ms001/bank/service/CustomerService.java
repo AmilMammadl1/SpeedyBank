@@ -20,7 +20,7 @@ public interface CustomerService {
     CustomerResponseDTO signUp(CustomerCreateRequestDTO customerCreateRequestDTO);
 
     void deleteUser(Long id);
-    UserDetailsService userDetailsService();
+//    UserDetailsService userDetailsService();
     JwtAuthenticationResponse signIn(CustomerSignInRequest customerSignInRequest);
     JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
 }

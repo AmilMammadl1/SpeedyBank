@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService{
     private EmployeeMapper employeeMapper;
     private DepartmentRepository departmentRepository;
     private EmployeeRepository employeeRepository;
@@ -84,17 +84,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.deleteById(id);
     }
     @Override
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            //loadUserByUsername method returns an instance of UserDetails, which is another interface in Spring Security. UserDetails represents a user's core information (such as username, password, and authorities) and is used by Spring Security to perform authentication and authorization.
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return employeeRepository.findByEmail(username)
-                        .orElseThrow(() -> new EmployeeNotFoundException("Employeer not found with email: " + username));
-            }
-        };
-    }
-    @Override
     public EmployeeResponseDTO signUp(EmployeeCreateRequestDTO employeeCreateRequestDTO) {
         Employee employee = employeeMapper.mapEmployeeCreateRequestDTOToEmployeeEntity(employeeCreateRequestDTO);
         Department department = departmentRepository.findById(employeeCreateRequestDTO.getDepartmentId())
@@ -107,6 +96,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeResponseDTO employeeResponseDTO = employeeMapper.mapEmployeeEntityToEmployeeResponseDTO(createdEmployee);
         return employeeResponseDTO;
     }
+    @Override
     public JwtAuthenticationResponse signIn(EmployeeSignInRequest employeeSignInRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(employeeSignInRequest.getEmail(),
                 employeeSignInRequest.getPassword()));
@@ -120,4 +110,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return jwtAuthenticationResponse;
     }
+
+
 }

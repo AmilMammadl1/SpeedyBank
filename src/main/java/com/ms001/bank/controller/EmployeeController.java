@@ -32,7 +32,7 @@ public class EmployeeController {
 
     @PostMapping("/create")
     public ResponseEntity<EmployeeResponseDTO> createEmployee(@Valid @RequestBody EmployeeCreateRequestDTO employeeCreateRequestDTO) {
-        EmployeeResponseDTO employeeResponseDTO = employeeService.createEmployee(employeeCreateRequestDTO);
+        EmployeeResponseDTO employeeResponseDTO = employeeService.signUp(employeeCreateRequestDTO);
         return new ResponseEntity<>(employeeResponseDTO, HttpStatus.CREATED);
     }
 
