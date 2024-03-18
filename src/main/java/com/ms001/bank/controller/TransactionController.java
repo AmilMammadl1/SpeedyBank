@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@AllArgsConstructor
-@RequestMapping("/api/transaction")
+//@RestController
+//@AllArgsConstructor
+//@RequestMapping("/api/transaction")
 public class TransactionController {
     private TransactionService transactionService;
 

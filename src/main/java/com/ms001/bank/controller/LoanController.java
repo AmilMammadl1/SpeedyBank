@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@AllArgsConstructor
-@RequestMapping("/api/loan")
+//@RestController
+//@AllArgsConstructor
+//@RequestMapping("/api/loan")
 public class LoanController {
     private LoanService loanService;
 

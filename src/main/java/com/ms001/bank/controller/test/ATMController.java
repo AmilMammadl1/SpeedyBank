@@ -1,4 +1,4 @@
-package com.ms001.bank.controller;
+package com.ms001.bank.controller.test;
 
 import com.ms001.bank.dto.request.ATMCreateRequestDTO;
 import com.ms001.bank.dto.request.ATMUpdateRequestDTO;
@@ -30,19 +30,19 @@ public class ATMController {
         return new ResponseEntity<>(ATMResponseDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+//    @PostMapping("/create")
     public ResponseEntity<ATMResponseDTO> createATM(@Valid @RequestBody ATMCreateRequestDTO atmCreateRequestDTO) {
         ATMResponseDTO ATMResponseDTO = atmService.createATM(atmCreateRequestDTO);
         return new ResponseEntity<>(ATMResponseDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+//    @PutMapping("/update/{id}")
     public ResponseEntity<ATMResponseDTO> updateATM(@PathVariable Long id, @Valid @RequestBody ATMUpdateRequestDTO atmUpdateRequestDTO) {
         ATMResponseDTO ATMResponseDTO = atmService.updateATM(id, atmUpdateRequestDTO);
         return new ResponseEntity<>(ATMResponseDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+//    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteATMByid(@PathVariable Long id) {
         atmService.deleteATM(id);
         return ResponseEntity.noContent().build();

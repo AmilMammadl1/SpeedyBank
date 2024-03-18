@@ -12,10 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-@RestController
-@AllArgsConstructor
-@RequestMapping("/api/bank")
+//
+//@RestController
+//@AllArgsConstructor
+//@RequestMapping("/api/bank")
 public class BankController {
     private BankService bankService;
     @GetMapping("/{name}")

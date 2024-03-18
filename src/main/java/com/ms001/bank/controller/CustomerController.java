@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@AllArgsConstructor
-@RequestMapping("/api/user")
+//@RestController
+//@AllArgsConstructor
+//@RequestMapping("/api")
 public class CustomerController {
     private CustomerService customerService;
     @GetMapping("/all")
@@ -23,19 +23,19 @@ public class CustomerController {
         return new ResponseEntity<>(allCustomerResponseDtos, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<CustomerResponseDTO> getUserById(@PathVariable Long id) {
         CustomerResponseDTO customerResponseDTO = customerService.getUserById(id);
         return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
     }
 
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/user/{id}")
     public ResponseEntity<CustomerResponseDTO> updateUser(@PathVariable Long id, @Valid @RequestBody CustomerUpdateRequestDTO updateRequestDTO) {
         CustomerResponseDTO customerResponseDTO = customerService.updateUser(updateRequestDTO,id);
         return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/user/{id}")
     public ResponseEntity<Void> deleteUserByid(@PathVariable Long id) {
         customerService.deleteUser(id);
         return ResponseEntity.noContent().build();

@@ -26,21 +26,27 @@ public class CardServiceImpl implements CardService {
     private TransactionRepository transactionRepository;
     private AccountRepository accountRepository;
     private CardRepository cardRepository;
+
     @Override
     public CardResponseDTO CardTransaction(ProcessTransactionDTO processTransactionDTO) {
         Long cardId = processTransactionDTO.getId();
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new CardNotFoundException("Card not found with ID: " + cardId));
-        Transaction transaction = transactionRepository.findById(processTransactionDTO.getTransactionName()).get();
-        if (transaction == null) {
-            throw new TransactionNotFoundException("Transaction not found with name: "+transaction.getName());
-        }
-        double updateBalance = card.updateBalance(transaction, processTransactionDTO.getAmount());
-        card.setBalance(updateBalance);
+        if (card.checkCardIsActive() == true && card.getAccount().checkAccountnIsActive()==true) {
+            Transaction transaction = transactionRepository.findById(processTransactionDTO.getTransactionName()).get();
+            if (transaction == null) {
+                throw new TransactionNotFoundException("Transaction not found with name: " + transaction.getName());
+            }
+            double updateBalance = card.updateBalance(transaction, processTransactionDTO.getAmount());
+            card.setBalance(updateBalance);
 
-        Card updatedCardWithTransaction = cardRepository.save(card);
-        CardResponseDTO cardResponseDTO = cardMapper.mapCardEntityToCardResponseDTO(updatedCardWithTransaction);
-        return cardResponseDTO;
+            Card updatedCardWithTransaction = cardRepository.save(card);
+            CardResponseDTO cardResponseDTO = cardMapper.mapCardEntityToCardResponseDTO(updatedCardWithTransaction);
+            return cardResponseDTO;
+        }
+        else {
+            throw new RuntimeException("Card is not active");
+        }
 
     }
 

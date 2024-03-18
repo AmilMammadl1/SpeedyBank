@@ -69,7 +69,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public LoanResponseDTO createLoan(LoanCreateRequestDTO loanCreateRequestDTO) {
-        Loan loan = loanMapper.mapLoanCreateRequestDTOToEmployeeEntity(loanCreateRequestDTO);
+        Loan loan = loanMapper.mapLoanCreateRequestDTOToLoanEntity(loanCreateRequestDTO);
         Long customerId = loanCreateRequestDTO.getCustomerId();
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));

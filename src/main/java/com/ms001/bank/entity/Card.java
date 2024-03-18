@@ -18,8 +18,18 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     @Column(unique = true)
     private String cardNumber;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date expirationDate;
     @Enumerated(EnumType.STRING)
     private CardType cardType;
@@ -30,16 +40,9 @@ public class Card {
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
-    private String generateUniqueCardNumber() {
-        // Fixed prefix for the card number
-        String prefix = "88186818";
 
-        // Generate a unique portion using UUID
-        String uniquePortion = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
 
-        // Concatenate the prefix and unique portion to create the full card number
-        return prefix + uniquePortion;
-    }
+
     public Card() {
         this.cardNumber = generateUniqueCardNumber();
         this.expirationDate = calculateExpirationDate();
@@ -48,7 +51,18 @@ public class Card {
         this.createdAt = new Date();
 
     }
-    public double updateBalance(Transaction transaction,double transactionAmount) {
+    private String generateUniqueCardNumber() {
+        // Fixed prefix for the card number
+        String prefix = "88186818";
+
+        // Generate a unique portion using UUID
+        String uniquePortion = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8);
+
+        // Concatenate the prefix and unique portion to create the full card number
+        return prefix + uniquePortion;
+    }
+
+    public double updateBalance(Transaction transaction, double transactionAmount) {
         double currentBalance = getBalance();
         double resultBalance = currentBalance;
 //        double transactionAmount = transaction.getAmount();
@@ -57,13 +71,13 @@ public class Card {
         if (TransactionType.WITHDRAWAL.equals(transaction.getTransactionType())) {
             transactionAmount *= -1;
             resultBalance = transactionAmount + currentBalance;
-        }
-        else if (TransactionType.DEPOSIT.equals(transaction.getTransactionType())) {
+        } else if (TransactionType.DEPOSIT.equals(transaction.getTransactionType())) {
             transactionAmount *= 1;
             resultBalance = transactionAmount + currentBalance;
         }
         return resultBalance;
     }
+
     private Date calculateExpirationDate() {
         // Implement your logic to calculate the expiration date, for example adding 3 years to the current date
         Calendar calendar = Calendar.getInstance();
@@ -71,4 +85,10 @@ public class Card {
         return calendar.getTime();
     }
 
+    public boolean checkCardIsActive() {
+        if (isActive == true && expirationDate.before(new Date())) {
+            return true;
+        }
+        return false;
+    }
 }

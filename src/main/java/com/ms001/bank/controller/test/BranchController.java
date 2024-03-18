@@ -1,4 +1,4 @@
-package com.ms001.bank.controller;
+package com.ms001.bank.controller.test;
 
 import com.ms001.bank.dto.request.BranchUpdateRequestDTO;
 import com.ms001.bank.dto.response.BranchResponseDTO;
@@ -30,18 +30,18 @@ public class BranchController {
         return new ResponseEntity<>(branchResponseDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+//    @PostMapping("/create")
     public ResponseEntity<BranchResponseDTO> createBranch(@Valid @RequestBody BranchCreateRequestDTO branchCreateRequestDTO) {
         BranchResponseDTO branchResponseDTO = branchService.createBranch(branchCreateRequestDTO);
         return new ResponseEntity<>(branchResponseDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+//    @PutMapping("/update/{id}")
     public ResponseEntity<BranchResponseDTO> updateBranch(@PathVariable Long id,@Valid @RequestBody BranchUpdateRequestDTO branchUpdateRequestDTO) {
         BranchResponseDTO branchResponseDTO = branchService.updateBranch(id, branchUpdateRequestDTO);
         return new ResponseEntity<>(branchResponseDTO, HttpStatus.OK);
     }
-    @DeleteMapping("/delete/{id}")
+//    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteBranchByid(@PathVariable Long id) {
         branchService.deleteBranchByid(id);
         return ResponseEntity.noContent().build();

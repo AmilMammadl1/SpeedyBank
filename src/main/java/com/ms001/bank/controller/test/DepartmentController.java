@@ -1,4 +1,4 @@
-package com.ms001.bank.controller;
+package com.ms001.bank.controller.test;
 
 import com.ms001.bank.dto.request.DepartmentUpdateRequestDTO;
 import com.ms001.bank.dto.response.DepartmentResponseDTO;
@@ -30,19 +30,19 @@ public class DepartmentController {
         return new ResponseEntity<>(departmentResponseDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+//    @PostMapping("/create")
     public ResponseEntity<DepartmentResponseDTO> createDepartment(@Valid @RequestBody DepartmentCreateRequestDTO departmentCreateRequestDTO) {
         DepartmentResponseDTO departmentResponseDTO = departmentService.createDepartment(departmentCreateRequestDTO);
         return new ResponseEntity<>(departmentResponseDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+//    @PutMapping("/update/{id}")
     public ResponseEntity<DepartmentResponseDTO> updateDepartment(@PathVariable Long id, @Valid @RequestBody DepartmentUpdateRequestDTO departmentUpdateRequestDTO) {
         DepartmentResponseDTO departmentResponseDTO = departmentService.updateDepartment(departmentUpdateRequestDTO, id);
         return new ResponseEntity<>(departmentResponseDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+//    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteDepartmentByid(@PathVariable Long id) {
         departmentService.deleteDepartment(id);
         return ResponseEntity.noContent().build();

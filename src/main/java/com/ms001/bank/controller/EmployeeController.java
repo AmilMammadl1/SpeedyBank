@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@AllArgsConstructor
-@RequestMapping("/api/employee")
+//@RestController
+//@AllArgsConstructor
+//@RequestMapping("/api/employee")
 public class EmployeeController {
     private EmployeeService employeeService;
 

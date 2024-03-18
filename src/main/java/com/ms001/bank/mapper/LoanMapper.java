@@ -15,7 +15,7 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LoanMapper {
-    Loan mapLoanCreateRequestDTOToEmployeeEntity(LoanCreateRequestDTO loanCreateRequestDTO);
+    Loan mapLoanCreateRequestDTOToLoanEntity(LoanCreateRequestDTO loanCreateRequestDTO);
     Loan mapLoanUpdateRequestDTOToEmployeeEntity(LoanUpdateRequestDTO loanUpdateRequestDTO);
     @Mappings({
             @Mapping(target = "customerId", source = "loan.customer.id")

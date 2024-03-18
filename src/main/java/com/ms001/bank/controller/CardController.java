@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@AllArgsConstructor
-@RequestMapping("/api/card")
+//@RestController
+//@AllArgsConstructor
+//@RequestMapping("/api")
 public class CardController {
     private CardService cardService;
 
-    @GetMapping("/all")
+    @GetMapping("/card//all")
     public ResponseEntity<List<CardResponseDTO>> getAllCards() {
         List<CardResponseDTO> allCardResponseDtos = cardService.getAllCards();
         return new ResponseEntity<>(allCardResponseDtos, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/card/{id}")
     public ResponseEntity<CardResponseDTO> getCardById(@PathVariable Long id) {
         CardResponseDTO cardResponseDTO = cardService.getCardById(id);
         return new ResponseEntity<>(cardResponseDTO, HttpStatus.OK);
@@ -49,7 +49,7 @@ public class CardController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/card/delete/{id}")
     public ResponseEntity<Void> deleteCardByid(@PathVariable Long id) {
         cardService.deleteCard(id);
         return ResponseEntity.noContent().build();
