@@ -77,4 +77,7 @@ public class Account {
         }
         return false;
     }
+    public void addCreditBalanceToTotalBalance(double amount){
+        balanceTotal = balanceTotal+amount;
+    }
 }

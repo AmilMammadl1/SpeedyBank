@@ -1,5 +1,6 @@
 package com.ms001.bank.service.Impl;
 
+import com.ms001.bank.constant.CardType;
 import com.ms001.bank.dto.request.ProcessTransactionDTO;
 import com.ms001.bank.dto.response.CardResponseDTO;
 import com.ms001.bank.dto.request.CardCreateRequestDTO;
@@ -32,22 +33,25 @@ public class CardServiceImpl implements CardService {
         Long cardId = processTransactionDTO.getId();
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new CardNotFoundException("Card not found with ID: " + cardId));
-        if (card.checkCardIsActive() == true && card.getAccount().checkAccountnIsActive()==true) {
-            Transaction transaction = transactionRepository.findById(processTransactionDTO.getTransactionName()).get();
-            if (transaction == null) {
-                throw new TransactionNotFoundException("Transaction not found with name: " + transaction.getName());
+        if (card.checkCardIsActive() == true && card.getAccount().checkAccountnIsActive() == true) {
+            if (card.getCardType() == CardType.CREDIT || card.getCardType() == CardType.DEBIT) {
+                Transaction transaction = transactionRepository.findById(processTransactionDTO.getTransactionName())
+                        .orElseThrow(()->new RuntimeException("Transaction is not valid"));
+
+                if (card.getBalance() > 0 && card.getBalance() >= processTransactionDTO.getAmount()) {
+                    double updateBalance = card.updateBalance(transaction, processTransactionDTO.getAmount());
+                    card.setBalance(updateBalance);
+
+                    Card updatedCardWithTransaction = cardRepository.save(card);
+                    CardResponseDTO cardResponseDTO = cardMapper.mapCardEntityToCardResponseDTO(updatedCardWithTransaction);
+                    return cardResponseDTO;
+                } else {
+                    throw new RuntimeException("Card is not active");
+                }
+
             }
-            double updateBalance = card.updateBalance(transaction, processTransactionDTO.getAmount());
-            card.setBalance(updateBalance);
-
-            Card updatedCardWithTransaction = cardRepository.save(card);
-            CardResponseDTO cardResponseDTO = cardMapper.mapCardEntityToCardResponseDTO(updatedCardWithTransaction);
-            return cardResponseDTO;
         }
-        else {
-            throw new RuntimeException("Card is not active");
-        }
-
+        return null;
     }
 
     @Override

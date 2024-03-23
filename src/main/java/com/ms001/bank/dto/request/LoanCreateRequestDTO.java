@@ -18,4 +18,6 @@ public class LoanCreateRequestDTO {
     private Long term;
     @NotNull(message = "Customer field cannot be null")
     private Long customerId;
+    @NotNull(message = "Card number cannot be null")
+    private Long cardId;
 }

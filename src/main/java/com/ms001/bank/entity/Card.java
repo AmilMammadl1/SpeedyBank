@@ -42,7 +42,6 @@ public class Card {
     private Account account;
 
 
-
     public Card() {
         this.cardNumber = generateUniqueCardNumber();
         this.expirationDate = calculateExpirationDate();
@@ -90,5 +89,8 @@ public class Card {
             return true;
         }
         return false;
+    }
+    public void addCreditBalanceToCardBalance(double amount){
+        balance = balance+amount;
     }
 }

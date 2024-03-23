@@ -1,9 +1,6 @@
 package com.ms001.bank.controller.test;
 
-import com.ms001.bank.dto.request.CardCreateRequestDTO;
-import com.ms001.bank.dto.request.CardUpdateRequestDTO;
-import com.ms001.bank.dto.request.CustomerUpdateRequestDTO;
-import com.ms001.bank.dto.request.ProcessTransactionDTO;
+import com.ms001.bank.dto.request.*;
 import com.ms001.bank.dto.response.CardResponseDTO;
 import com.ms001.bank.dto.response.CustomerResponseDTO;
 import com.ms001.bank.dto.response.LoanResponseDTO;
@@ -63,5 +60,9 @@ public class CustomerContoller {
         List<LoanResponseDTO> allLoanResponseDTOS = loanService.getAllLoansOfUser(userId);
         return new ResponseEntity<>(allLoanResponseDTOS, HttpStatus.OK);
     }
-
+    @PutMapping("take/loans-user")
+    public ResponseEntity<CardResponseDTO> offerLoan(@PathVariable LoanPayRequestDTO loanPayRequestDTO) {
+        CardResponseDTO card = loanService.payLoan(loanPayRequestDTO);
+        return new ResponseEntity<>(card, HttpStatus.OK);
+    }
 }
