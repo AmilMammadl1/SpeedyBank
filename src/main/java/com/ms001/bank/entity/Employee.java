@@ -28,7 +28,7 @@ public class Employee implements UserDetails {
     private String email;
     private String passwrd;
     @Enumerated(value = EnumType.STRING)
-    private Role role;
+    private Role role = Role.DEVELOPER;
     private double salary;
     @ManyToOne
     @JoinColumn(name = "department_id")

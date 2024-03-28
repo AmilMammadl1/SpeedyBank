@@ -30,7 +30,7 @@ public class Customer implements UserDetails {
     @Column(unique = true)
     private String phoneNumber;
     @Enumerated(value = EnumType.STRING)
-    private Role role;
+    private Role role = Role.USER;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

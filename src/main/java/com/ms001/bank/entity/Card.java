@@ -93,4 +93,7 @@ public class Card {
     public void addCreditBalanceToCardBalance(double amount){
         balance = balance+amount;
     }
+    public void addBalanceTransaction(double amount){
+        balance = balance + amount;
+    }
 }

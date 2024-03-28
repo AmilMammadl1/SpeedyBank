@@ -1,6 +1,7 @@
 package com.ms001.bank.service.Impl;
 
 import com.ms001.bank.constant.CardType;
+import com.ms001.bank.constant.TransactionType;
 import com.ms001.bank.dto.request.ProcessTransactionDTO;
 import com.ms001.bank.dto.response.CardResponseDTO;
 import com.ms001.bank.dto.request.CardCreateRequestDTO;
@@ -33,6 +34,9 @@ public class CardServiceImpl implements CardService {
         Long cardId = processTransactionDTO.getId();
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new CardNotFoundException("Card not found with ID: " + cardId));
+        Card cardToNextCustomer = cardRepository.findByCardNumber(processTransactionDTO.getCardNumber())
+                .orElseThrow(() -> new CardNotFoundException("Card not found with card number: " + processTransactionDTO.getCardNumber()));
+
         if (card.checkCardIsActive() == true && card.getAccount().checkAccountnIsActive() == true) {
             if (card.getCardType() == CardType.CREDIT || card.getCardType() == CardType.DEBIT) {
                 Transaction transaction = transactionRepository.findById(processTransactionDTO.getTransactionName())
@@ -41,6 +45,10 @@ public class CardServiceImpl implements CardService {
                 if (card.getBalance() > 0 && card.getBalance() >= processTransactionDTO.getAmount()) {
                     double updateBalance = card.updateBalance(transaction, processTransactionDTO.getAmount());
                     card.setBalance(updateBalance);
+                    if(transaction.getName().equals(TransactionType.WITHDRAWAL.name())){
+                        cardToNextCustomer.addBalanceTransaction(processTransactionDTO.getAmount());
+                    }
+                    cardRepository.save(cardToNextCustomer);
 
                     Card updatedCardWithTransaction = cardRepository.save(card);
                     CardResponseDTO cardResponseDTO = cardMapper.mapCardEntityToCardResponseDTO(updatedCardWithTransaction);
@@ -48,7 +56,6 @@ public class CardServiceImpl implements CardService {
                 } else {
                     throw new RuntimeException("Card is not active");
                 }
-
             }
         }
         return null;

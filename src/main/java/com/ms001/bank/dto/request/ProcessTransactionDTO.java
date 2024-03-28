@@ -19,4 +19,6 @@ public class ProcessTransactionDTO {
     private String transactionName;
     @NotNull(message = "Amount field cannot be null")
     private double amount;
+    @NotNull(message = "Card Number type field cannot be null")
+    private String cardNumber;
 }

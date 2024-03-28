@@ -36,8 +36,6 @@ public class LoanServiceImpl implements LoanService {
     private LoanRepository loanRepository;
     private CustomerRepository customerRepository;
     private CardRepository cardRepository;
-
-
     @Override
     public List<LoanResponseDTO> getAllLoans() {
         List<Loan> loans = loanRepository.findAll();
@@ -95,24 +93,28 @@ public class LoanServiceImpl implements LoanService {
         Long customerId = loanCreateRequestDTO.getCustomerId();
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));
-        customer.getAccount().addCreditBalanceToTotalBalance(loanCreateRequestDTO.getAmount());
-        List<Card> cards = customer.getAccount().getCards();
-//        Card card = cards.get(Math.toIntExact(loanCreateRequestDTO.getCardId() - 1));
-        Card card = cardRepository.findById(loanCreateRequestDTO.getCardId())
-                .orElseThrow(() -> new CardNotFoundException("Card not found with id: " + loanCreateRequestDTO.getCardId()));
-        if (!card.getAccount().getCustomer().equals(customer)) {
-            throw new IllegalStateException("Card does not belong to the customer associated with the loan create request.");
-        }
+        if (customer.getLoans().size() <= 3) {
+            List<Card> cards = customer.getAccount().getCards();
+            Card card = cardRepository.findById(loanCreateRequestDTO.getCardId())
+                    .orElseThrow(() -> new CardNotFoundException("Card not found with id: " + loanCreateRequestDTO.getCardId()));
+            if (!card.getAccount().getCustomer().equals(customer)) {
+                throw new IllegalStateException("Card does not belong to the customer associated with the loan create request.");
+            }
+//        customer.getAccount().addCreditBalanceToTotalBalance(loanCreateRequestDTO.getAmount());
 
-        if (card.checkCardIsActive() && card.getCardType() == CardType.CREDIT) {
-            card.addCreditBalanceToCardBalance(loanCreateRequestDTO.getAmount());
+            if (card.checkCardIsActive() && card.getCardType() == CardType.CREDIT) {
+                card.addCreditBalanceToCardBalance(loanCreateRequestDTO.getAmount());
+                cardRepository.save(card);
+            }
+            loan.setCustomer(customer);
+            Loan createdLoan = loanRepository.save(loan);
+            LoanResponseDTO loanResponseDTO = loanMapper.mapLoanEntityToLoanResponseDTO(createdLoan);
+            return loanResponseDTO;
         }
-        loan.setCustomer(customer);
-        Loan createdLoan = loanRepository.save(loan);
-        LoanResponseDTO loanResponseDTO = loanMapper.mapLoanEntityToLoanResponseDTO(createdLoan);
-        return loanResponseDTO;
+        else {
+            return null;
+        }
     }
-
     @Override
     public CardResponseDTO payLoan(LoanPayRequestDTO loanPayRequestDTO) {
         Loan loan = loanRepository.findById(loanPayRequestDTO.getLoanId())
@@ -127,15 +129,22 @@ public class LoanServiceImpl implements LoanService {
         double months = (double) loan.getTermOfCredit().getMonths();
         double amount = loan.getAmount();
         double payCheckForEachMonth = amount / months;
-        if (card.checkCardIsActive() && card.getCardType() == CardType.DEBIT) {
+        if (card.checkCardIsActive() && card.getCardType() == CardType.DEBIT && loan.getAmount()>0) {
             if(card.getBalance() >= payCheckForEachMonth){
                 double balance = card.getBalance();
                 balance = balance - payCheckForEachMonth;
                 card.setBalance(balance);
+                double loanAmount = loan.getAmount();
+                loanAmount = loanAmount - payCheckForEachMonth;
+                loan.setAmount(loanAmount);
+                loanRepository.save(loan);
             }
         }
         else{
             throw new RuntimeException("Problem for to pay your loan");
+        }
+        if (loan.getAmount() == 0 ){
+            deleteloan(loanPayRequestDTO.getLoanId());
         }
         Card updatedCard = cardRepository.save(card);
         CardResponseDTO cardResponseDTO = cardMapper.mapCardEntityToCardResponseDTO(updatedCard);

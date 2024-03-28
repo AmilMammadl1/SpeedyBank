@@ -1,55 +1,71 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.3'
-	id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'com.ms202'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.1.1'
-	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.1.1'
+    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
 //	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
 
-	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'org.postgresql:postgresql'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
-	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.5'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.10.2'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.5'
-	implementation group: 'org.springframework.security', name: 'spring-security-core', version: '6.2.2'
-	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
-	implementation group: 'org.springframework.security', name: 'spring-security-web', version: '6.2.2'
-	implementation group: 'org.springframework.security', name: 'spring-security-config', version: '6.2.1'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.10.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.5'
+    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '6.2.2'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
+    implementation group: 'org.springframework.security', name: 'spring-security-web', version: '6.2.2'
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: '6.2.1'
+    // Spring Boot Starter Web - Include if not already added
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+// Springfox Swagger2
+    implementation 'io.springfox:springfox-swagger2:3.0.0'
+
+// Springfox Swagger UI
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 
 
+    // Spring Boot Starter Web - Include if not already added
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Springfox Swagger2
+    implementation 'io.springfox:springfox-swagger2:3.0.0'
+
+    // Springfox Swagger UI
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 
 
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
